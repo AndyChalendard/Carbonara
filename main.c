@@ -15,10 +15,6 @@ int main()
   SDL_Renderer * renderer;
 
   map_t map;
-  int x_init_player;
-  int y_init_player;
-
-  char fileMap[] = "Data/Map/etage1";
 
   /* variable d'initialisation de SDL_image */
   int flags = IMG_INIT_JPG | IMG_INIT_PNG;
@@ -79,31 +75,14 @@ int main()
 
   printf("SDL initialisée !\n");
 
-  /*intialisation de la map*/
-  x_init_player = 0;
-  y_init_player = 0;
-
-  map = mapFromFile(fileMap, &x_init_player, &y_init_player);
-  initMapTexture(renderer, &map);
-  if (map.w != 0 && map.h != 0)/*TODO*/
+  /*intialisation de la map et du joueur*/
+  if (loadGame(renderer, "Data/Map/etage1", &map, &player) == 1)
   {
-    printf("MAP initialisée !\n");
-    printf("La map fait %d*%d et contient:%d ennemies \n", map.w, map.h, map.nbEnnemies);
-  }else{
-    fprintf(stderr,"Erreur lors de la création de la MAP\n");
-    printf("La map fait %d*%d et contient:%d ennemies \n", map.w, map.h, map.nbEnnemies);
-    freeMap(map);
     IMG_Quit();
     TTF_Quit();
     SDL_Quit();
     return EXIT_FAILURE;
   }
-
-  /*initialisation des différentes variables*/
-  initEnnemis(renderer, &map);
-  player = new_charac(x_init_player*TAILLE_BLOC, y_init_player*TAILLE_BLOC+50, DIR_STOP);
-  initPlayerTexture(renderer, &player);
-  printf("Ennemies et joueur initialisé !\n");
 
   /*initialisation des evenements clavier*/
   touche = init_touche();
@@ -117,6 +96,17 @@ int main()
 
     displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);
+    if (time > timeMax)
+    {
+      time = 0;
+      if (reloadGame(renderer, "Data/Map/etage1", &map, &player))
+      {
+        IMG_Quit();
+        TTF_Quit();
+        SDL_Quit();
+        return EXIT_FAILURE;
+      }
+    }
   }
 
   printf("Déchargement du jeu...\n");
