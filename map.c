@@ -44,8 +44,8 @@ map_t mapFromFile(char * fileName, int * px, int * py) {
             } else {
 /* lecture fichier */
                /* on suppose la map bien ecrite */
-               for (i = 0; i < map.w; ++i) {
-                  for (j = 0; j < map.h; ++j) {
+               for (j = 0; j < map.h; ++j) {
+                  for (i = 0; i < map.w; ++i) {
                      fscanf(pf, "%d", &code);
 
                      switch (code) {
