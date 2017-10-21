@@ -16,20 +16,22 @@ int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAc
   int last_y = player->y;
 
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
-  int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
+  int caseY = (player->y-HAUTEUR_TEMPS + TAILLE_BLOC/2)/TAILLE_BLOC;
 
   block_t * block = getBlockOnMap(map, caseX, caseY-1);
-  int decallage = 13;
 
   if (*pause == 1)
   {
 
     return 0;
   }
+  /*int decallage = 13;
+>>>>>>> Stashed changes
 
-  if ((caseX*TAILLE_BLOC) + decallage > player->x && (caseX*TAILLE_BLOC) - decallage < player->x)/* coordonnée X*/
+   ancien
+  if ((caseX*TAILLE_BLOC) + decallage > player->x && (caseX*TAILLE_BLOC) - decallage < player->x)
   {
-    if ((caseY*TAILLE_BLOC) + decallage > player->y-50 && (caseY*TAILLE_BLOC) - decallage < player->y-50)/* coordonnée X*/
+    if ((caseY*TAILLE_BLOC) + decallage > player->y-50 && (caseY*TAILLE_BLOC) - decallage < player->y-50)
     {
       teleport(*map, player);
       switch (block->opt)
@@ -47,7 +49,28 @@ int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAc
           break;
       }
     }
-  }
+}*/
+
+   /*nouveau */
+   switch (map->map[caseX][caseY].opt) {
+      case BLOCK_OPT_TP_Q:
+         teleport(*map, player);
+         break;
+      case BLOCK_OPT_END:
+         *(mapAct) = *(mapAct) + 1;
+         *time = 0;
+         if (reloadGame(renderer, *mapAct, map, player))
+         {
+           IMG_Quit();
+           TTF_Quit();
+           SDL_Quit();
+           return 1;
+         }
+         break;
+   }
+
+
+
 
   /*Déplacement du personnage*/
   if (touche->haut == 1)
@@ -87,7 +110,6 @@ void teleport(map_t map, charac_t * pc) {
    if (map.map[caseX][caseY].opt == BLOCK_OPT_TP_Q) {
       pc->x = TAILLE_BLOC * map.map[caseX][caseY].opt_data->v1;
       pc->y = TAILLE_BLOC * map.map[caseX][caseY].opt_data->v2 + HAUTEUR_TEMPS;
-
    }
 }
 
@@ -228,10 +250,30 @@ int it_detection(map_t map, int k, charac_t c) {
             res = (cX == eX-i) && (cY == eY);
             ++i;
          }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-i][eY-1].id != BLOCK_ID_WALL) {
+            res = (cX == eX-i) && (cY == eY);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-i][eY+1].id != BLOCK_ID_WALL) {
+            res = (cX == eX-i) && (cY == eY);
+            ++i;
+         }
          break;
       case DIR_RIGHT:
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX+i][eY].id != BLOCK_ID_WALL) {
+            res = (cX == eX+i) && (cY == eY);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+i][eY-1].id != BLOCK_ID_WALL) {
+            res = (cX == eX+i) && (cY == eY);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+i][eY+1].id != BLOCK_ID_WALL) {
             res = (cX == eX+i) && (cY == eY);
             ++i;
          }
@@ -242,10 +284,30 @@ int it_detection(map_t map, int k, charac_t c) {
             res = (cX == eX) && (cY == eY-i);
             ++i;
          }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-1][eY-i].id != BLOCK_ID_WALL) {
+            res = (cX == eX) && (cY == eY-i);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+1][eY-i].id != BLOCK_ID_WALL) {
+            res = (cX == eX) && (cY == eY-i);
+            ++i;
+         }
          break;
       case DIR_DOWN:
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX][eY+i].id != BLOCK_ID_WALL) {
+            res = (cX == eX) && (cY == eY+i);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-1][eY+i].id != BLOCK_ID_WALL) {
+            res = (cX == eX) && (cY == eY+i);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+1][eY+i].id != BLOCK_ID_WALL) {
             res = (cX == eX) && (cY == eY+i);
             ++i;
          }
