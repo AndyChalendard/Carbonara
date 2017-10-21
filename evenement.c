@@ -17,6 +17,8 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   block_t * blockBas;
   block_t * blockHaut;
 
+  int caseX, caseY;
+
   /*Déplacement du personnage*/
   if (touche->haut == 1)
     player->x -= 2;
@@ -28,8 +30,8 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
     player->y += 2;
 
   /*block autour*/
-  int caseX = (charac->x)/TAILLE_BLOC;
-  int caseY = (charac->y-50)/TAILLE_BLOC;
+  caseX = (player->x)/TAILLE_BLOC;
+  caseY = (player->y-50)/TAILLE_BLOC;
 
   blockDroite = getBlockOnMap(map, caseX+1, caseY);
   blockGauche = getBlockOnMap(map, caseX-1, caseY);
