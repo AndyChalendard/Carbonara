@@ -2,7 +2,10 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 
-void displayAll(SDL_Renderer * renderer, map_t map, chara_t charac, int time, int time_max);
+#include "map.h"
+#include "charac.h"
+
+void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max);
 
 void displayMap(SDL_Renderer * renderer, map_t map);
 

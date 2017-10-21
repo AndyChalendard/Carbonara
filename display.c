@@ -1,6 +1,6 @@
 #include "display.h"
 
-void displayAll(SDL_Renderer * renderer, map_t map, chara_t charac, int time, int time_max)
+void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max)
 {
   displayMap(map);
   displayCharac(charac);

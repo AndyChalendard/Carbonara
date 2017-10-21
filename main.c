@@ -3,6 +3,7 @@
 #define HauteurFenetre 550
 #define LargeurFenetre 950
 
+#include "evenement.h"
 #include "display.h"
 #include "charac.h"
 #include "map.h"
@@ -11,6 +12,8 @@ int main()
 {
   int time = 0;
   int timeMax = 0;
+  data_touche touche;
+  
   SDL_Renderer * renderer;
 
   /* variable d'initialisation de SDL_image */
@@ -82,8 +85,8 @@ int main()
   }
 
   /* on libere le renderer */
-  if(data.renderer)
-        SDL_DestroyRenderer(data.renderer);
+  if(renderer)
+        SDL_DestroyRenderer(renderer);
 
   /* on libere la fenetre */
   SDL_DestroyWindow(window);
