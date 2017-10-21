@@ -10,7 +10,7 @@ data_touche init_touche()
   return touche;
 }
 
-void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
+int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player)
 {
   int last_x = player->x;
   int last_y = player->y;
@@ -18,55 +18,72 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
   int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
 
+  switch (getBlockOnMap(map, caseX, caseY-1)->opt)
+  {
+    case BLOCK_OPT_END:
+      *(mapAct) = *(mapAct) + 1;
+      *time = 0;
+      if (reloadGame(renderer, *mapAct, map, player))
+      {
+        IMG_Quit();
+        TTF_Quit();
+        SDL_Quit();
+        return 1;
+      }
+      break;
+  }
+
   /*Déplacement du personnage*/
   if (touche->haut == 1)
   {
-    player->y -= TAILLE_BLOC/25;
+    player->y -= (TAILLE_BLOC*SPEED_SELF/100);
     player->dir = DIR_UP;
     if (getBlockOnMap(map, caseX, caseY-1)->id == BLOCK_ID_WALL
           && (caseY*50) > player->y-50)
       player->y = last_y;
   }else if (touche->bas == 1){
-    player->y += TAILLE_BLOC/25;
+    player->y += (TAILLE_BLOC*SPEED_SELF/100);
     player->dir = DIR_DOWN;
     if (getBlockOnMap(map, caseX, caseY+1)->id == BLOCK_ID_WALL
           && (caseY*50) < player->y-50)
       player->y = last_y;
   }else if (touche->gauche == 1){
-    player->x -= TAILLE_BLOC/25;
+    player->x -= (TAILLE_BLOC*SPEED_SELF/100);
     player->dir = DIR_LEFT;
     if (getBlockOnMap(map, caseX-1, caseY)->id == BLOCK_ID_WALL
           && (caseX*50 > player->x))
       player->x = last_x;
   }else if (touche->droite == 1){
-    player->x += TAILLE_BLOC/25;
+    player->x += (TAILLE_BLOC*SPEED_SELF/100);
     player->dir = DIR_RIGHT;
     if (getBlockOnMap(map, caseX+1, caseY)->id == BLOCK_ID_WALL
           && (caseX)*50 < player->x)
       player->x = last_x;
   }
+
+  return 0;
 }
 
 
 void moveEnnemy(map_t map, int i) {
    switch (map.ennemies[i].dir) {
       case DIR_LEFT:
-         map.ennemies[i].x -= SPEED_ENNEMY;
+         map.ennemies[i].x -= (TAILLE_BLOC*SPEED_ENNEMY/100);
    /*      gestionCollision(map, map.ennemies + i, DIR_LEFT);*/
          ennemyChangeDir(map, i);
          break;
       case DIR_RIGHT:
-         map.ennemies[i].x += SPEED_ENNEMY;
+         map.ennemies[i].x += (TAILLE_BLOC*SPEED_ENNEMY/100);
       /*   gestionCollision(map, map.ennemies + i, DIR_RIGHT);*/
          ennemyChangeDir(map, i);
          break;
       case DIR_UP:
-         map.ennemies[i].y -= SPEED_ENNEMY;
+         map.ennemies[i].y -= (TAILLE_BLOC*SPEED_ENNEMY/100);
       /*   gestionCollision(map, map.ennemies + i, DIR_UP);*/
          ennemyChangeDir(map, i);
          break;
       case DIR_DOWN:
-         map.ennemies[i].y += SPEED_ENNEMY;
+         map.ennemies[i].y += (TAILLE_BLOC*SPEED_ENNEMY/100);
       /*   gestionCollision(map, map.ennemies + i, DIR_DOWN);*/
          ennemyChangeDir(map, i);
          break;
@@ -80,8 +97,8 @@ void ennemyChangeDir(map_t map, int i) {
    int mapX, mapY;
 
    if (
-      map.ennemies[i].x % TAILLE_BLOC < SPEED_ENNEMY &&
-      map.ennemies[i].y % TAILLE_BLOC < SPEED_ENNEMY
+      map.ennemies[i].x % TAILLE_BLOC < (TAILLE_BLOC*SPEED_ENNEMY/100) &&
+      map.ennemies[i].y % TAILLE_BLOC < (TAILLE_BLOC*SPEED_ENNEMY/100)
    ) {
       mapX = map.ennemies[i].x / TAILLE_BLOC;
       mapY = (map.ennemies[i].y - HAUTEUR_TEMPS) / TAILLE_BLOC;

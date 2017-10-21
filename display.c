@@ -92,8 +92,9 @@ int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
   int x_init_player = 0;
   int y_init_player = 0;
 
-  char fileMap[16] = "Data/Map/etage";
-  sprintf(fileMap, "%d", level);
+  char fileMap[16];
+  sprintf(fileMap, "Data/Map/etage%d", level);
+  printf("Chargement de la map: %s...\n", fileMap);
   *map = mapFromFile(fileMap, &x_init_player, &y_init_player);
   initMapTexture(renderer, map);
   if (map->w != 0 && map->h != 0)
