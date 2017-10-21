@@ -146,6 +146,66 @@ int gestionCollision(map_t map, charac_t * pc, int dir) {
 }
 
 
+int detection(map_t map, charac_t c) {
+   int i = 0, res = 0;
+
+   while (i < map.nbEnnemies && !res) {
+      res = it_detection(map, i, c);  ++i;
+   }
+
+   return res;
+}
+
+
+int it_detection(map_t map, int k, charac_t c) {
+   int res = 0;
+   int i = 0;
+
+   int cX = c.x / TAILLE_BLOC;
+   int cY = (c.y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+
+   int eX = map.ennemies[k].x / TAILLE_BLOC;
+   int eY = (map.ennemies[k].y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+
+   switch (map.ennemies[k].dir) {
+      case DIR_LEFT:
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-i][eY].id != BLOCK_ID_WALL) {
+            res = (cX == eX-i) && (cY == eY);
+            ++i;
+         }
+         break;
+      case DIR_RIGHT:
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+i][eY].id != BLOCK_ID_WALL) {
+            res = (cX == eX+i) && (cY == eY);
+            ++i;
+         }
+         break;
+      case DIR_UP:
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX][eY-i].id != BLOCK_ID_WALL) {
+            res = (cX == eX) && (cY == eY-1);
+            ++i;
+         }
+         break;
+      case DIR_DOWN:
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX][eY+i].id != BLOCK_ID_WALL) {
+            res = (cX == eX) && (cY == eY+1);
+            ++i;
+         }
+         break;
+      default:
+         fprintf(stderr, "direction inconnue : %d\n", map.ennemies[k].dir);
+         break;
+
+   }
+
+   return res;
+}
+
+
 void evenement(int * run, SDL_Event * event, data_touche * touche)
 {
   while(SDL_PollEvent(event)){
@@ -190,5 +250,5 @@ void evenement(int * run, SDL_Event * event, data_touche * touche)
           *run = 0;
           break;
       }
-  }
+   }
 }

@@ -218,7 +218,6 @@ void initMapTexture(SDL_Renderer * renderer, map_t * map)
         case BLOCK_ID_WALL:
           block->t = mur;
           break;
-        case BLOCK_ID_END:
         case BLOCK_ID_GRND:
           block->t = sol;
           break;

@@ -60,7 +60,7 @@ map_t mapFromFile(char * fileName, int * px, int * py) {
                            *px = i; *py = j;
                            break;
                         case FIC_CODE_A :
-                           map.map[i][j] = new_block(BLOCK_ID_END, 0);
+                           map.map[i][j] = new_block(BLOCK_ID_GRND, BLOCK_OPT_END);
                            break;
                         case FIC_CODE_G :
                            map.map[i][j] = new_block(BLOCK_ID_GRND, BLOCK_OPT_GO_L);
