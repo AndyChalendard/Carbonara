@@ -22,7 +22,7 @@ typedef struct{
 }data_touche;
 
 /* deplace le personnage */
-int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player);
+int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player);
 
 void teleport(map_t map, charac_t * pc);
 

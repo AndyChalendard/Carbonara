@@ -10,7 +10,7 @@ data_touche init_touche()
   return touche;
 }
 
-int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player)
+int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player)
 {
   int last_x = player->x;
   int last_y = player->y;
@@ -20,6 +20,12 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
 
   block_t * block = getBlockOnMap(map, caseX, caseY-1);
   int decallage = 10;
+
+  if (*pause == 1)
+  {
+
+    return 0;
+  }
 
   if ((caseX*TAILLE_BLOC) + decallage > player->x && (caseX*TAILLE_BLOC) - decallage < player->x)/* coordonnée X*/
   {

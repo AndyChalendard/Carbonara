@@ -1,14 +1,37 @@
 #include "display.h"
 
-void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max)
+void displayAll(SDL_Renderer * renderer, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max)
 {
   displayMap(renderer, map);
   displayEnnemies(renderer, map);
   displayCharac(renderer, charac);
   displayTime(renderer, time, time_max);
 
+  if (*pause == 1)
+  {
+    displayPause(renderer, font);
+  }
+
   /* finalisation de l'affichage */
   SDL_RenderPresent(renderer);
+}
+
+void displayPause(SDL_Renderer * renderer, TTF_Font * font)
+{
+  SDL_Rect rect;
+  SDL_Color noir = {0,0,255,0};
+  SDL_Texture  * t;
+  char txt[] = "PAUSE";
+
+  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+  rect.x = 70;
+  rect.y = 70;
+  rect.w = LARGEUR_FENETRE-100;
+  rect.h = 50;
+  SDL_RenderFillRect(renderer, &rect);
+
+  t = NULL;
+  img_text(renderer, font, t, txt, noir, rect);
 }
 
 void displayMap(SDL_Renderer * renderer, map_t map)
@@ -115,6 +138,17 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max)
   rect.w = (LARGEUR_FENETRE-20) - (time*(LARGEUR_FENETRE-20))/time_max;
   rect.h = 30;
   SDL_RenderFillRect(renderer, &rect);
+}
+
+void img_text(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture  * t, char * text, SDL_Color couleur, SDL_Rect rect)
+{
+  SDL_Surface * s;
+  s = TTF_RenderText_Blended(font,text,couleur);
+  if(s){
+      t = SDL_CreateTextureFromSurface(renderer,s);
+      SDL_FreeSurface(s);
+      SDL_RenderCopy(renderer, t, NULL, &rect);
+  }
 }
 
 int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)

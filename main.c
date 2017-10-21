@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "evenement.h"
 #include "display.h"
@@ -11,9 +12,12 @@ int main()
   int timeMax = 3600;
   data_touche touche;
   int mapAct = 1;
+  int pause = 1;
 
   charac_t player;
   SDL_Renderer * renderer;
+
+  TTF_Font * font;
 
   map_t map;
 
@@ -35,9 +39,9 @@ int main()
 
   /* initialisation de SDL_ttf */
   if (TTF_Init() != 0){
-    fprintf(stderr, "Erreur d'initialisation TTF : %s\n", TTF_GetError());
-    SDL_Quit();
-    return EXIT_FAILURE;
+      fprintf(stderr, "Erreur d'initialisation TTF : %s\n", TTF_GetError());
+      SDL_Quit();
+      return EXIT_FAILURE;
   }
 
   /* initialisation de SDL_image */
@@ -77,7 +81,6 @@ int main()
   printf("SDL initialisée !\n");
 
   /*intialisation de la map et du joueur*/
-
   if (loadGame(renderer, mapAct, &map, &player) == 1)
   {
     IMG_Quit();
@@ -86,15 +89,21 @@ int main()
     return EXIT_FAILURE;
   }
 
+  /*initialisation de la police*/
+  font = TTF_OpenFont("arial.ttf",20);
+
   /*initialisation des evenements clavier*/
   touche = init_touche();
   printf("Evenements initialisés !\n");
 
+
+  pause = 0;
   /* boucle d'evenement */
   while(run){
-    time += 1;
+    if (pause == 0)
+      time += 1;
     evenement(&run, &event, &touche);
-    if (evenementPlay(renderer, &map, &mapAct, &time, &touche, &player) == 1)
+    if (evenementPlay(renderer, &pause, &map, &mapAct, &time, &touche, &player) == 1)
     {
       IMG_Quit();
       TTF_Quit();
@@ -102,13 +111,16 @@ int main()
       return EXIT_FAILURE;
     }
 
-    moveEnnemyTab(map);
+    if (pause==0)
+    {
+      moveEnnemyTab(map);
 
-    if (detection(map, player)) {
-      printf("detection\n");
-   }
+      if (detection(map, player)) {
+        printf("detection\n");
+      }
+    }
 
-    displayAll(renderer, map, player, time, timeMax);
+    displayAll(renderer, &pause, font, map, player, time, timeMax);
     SDL_Delay(32);
     if (time > timeMax)
     {

@@ -14,12 +14,15 @@
 #define TAILLE_BLOC 50
 #define HAUTEUR_TEMPS 50
 
-void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max);
+void displayAll(SDL_Renderer * renderer, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max);
 
+void displayPause(SDL_Renderer * renderer, TTF_Font * font);
 void displayMap(SDL_Renderer * renderer, map_t map);
 void displayEnnemies(SDL_Renderer * renderer, map_t map);
 void displayCharac(SDL_Renderer * renderer, charac_t charac);
 void displayTime(SDL_Renderer * renderer, int time, int time_max);
+
+void img_text(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture  * t, char * text, SDL_Color couleur, SDL_Rect rect);
 
 int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);
 int reloadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);
