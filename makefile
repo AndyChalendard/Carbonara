@@ -12,7 +12,6 @@ EXEC=aphroCarbo
 $(EXEC): $(OBJ)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
-
 main.o: main.c *.h
 	$(CC) -c main.c $(CFLAGS)
 
