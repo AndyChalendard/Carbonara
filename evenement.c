@@ -31,6 +31,9 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
         return 1;
       }
       break;
+    case BLOCK_OPT_TP_Q:
+      teleport(*map, player);
+      break;
   }
 
   /*Déplacement du personnage*/
