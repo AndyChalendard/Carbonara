@@ -8,8 +8,9 @@
 int main()
 {
   int time = 0;
-  int timeMax = 1800;
+  int timeMax = 3600;
   data_touche touche;
+  int mapAct = 1;
 
   charac_t player;
   SDL_Renderer * renderer;
@@ -76,7 +77,8 @@ int main()
   printf("SDL initialisée !\n");
 
   /*intialisation de la map et du joueur*/
-  if (loadGame(renderer, "Data/Map/etage1", &map, &player) == 1)
+
+  if (loadGame(renderer, mapAct, &map, &player) == 1)
   {
     IMG_Quit();
     TTF_Quit();
@@ -92,16 +94,26 @@ int main()
   while(run){
     time += 1;
     evenement(&run, &event, &touche);
-    evenementPlay(&map, &touche, &player);
+    if (evenementPlay(renderer, &map, &mapAct, &time, &touche, &player) == 1)
+    {
+      IMG_Quit();
+      TTF_Quit();
+      SDL_Quit();
+      return EXIT_FAILURE;
+    }
 
     moveEnnemyTab(map);
+
+    if (detection(map, player)) {
+      printf("detection\n");
+   }
 
     displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);
     if (time > timeMax)
     {
       time = 0;
-      if (reloadGame(renderer, "Data/Map/etage1", &map, &player))
+      if (reloadGame(renderer, mapAct, &map, &player))
       {
         IMG_Quit();
         TTF_Quit();
