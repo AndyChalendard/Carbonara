@@ -65,6 +65,19 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
 }
 
 
+
+
+
+int collides(int x, int y, charac_t c) {
+   return (
+      c.x > x + TAILLE_BLOC ||
+      c.y > y + TAILLE_BLOC ||
+      x > c.x + TAILLE_BLOC ||
+      y > c.y + TAILLE_BLOC
+   );
+}
+
+
 void moveEnnemy(map_t map, int i) {
    switch (map.ennemies[i].dir) {
       case DIR_LEFT:

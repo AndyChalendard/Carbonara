@@ -24,6 +24,13 @@ typedef struct{
 /* deplace le personnage */
 int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player);
 
+int teleport(map_t map, charac_t * pc);
+
+/* teste la collision entre deux blocks
+ * x et y en px
+ */
+int collides(int x, int y, charac_t c);
+
 /* une iteration de moveEnnemyTab */
 void moveEnnemy(map_t map, int i);
 void moveEnnemyTab(map_t m);
@@ -31,7 +38,6 @@ void ennemyChangeDir(map_t map, int i);
 
 /* ne verifie la collision que d'un cote */
 int gestionCollision(map_t map, charac_t * pc, int dir);
-
 
 /* teste si un ennemi detecte le joueur
  * retourne 1 si detecte
