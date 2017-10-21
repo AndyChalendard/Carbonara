@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <SDL2/SDL.h>
 
 #ifndef __CHARAC_HEADER__
 #define __CHARAC_HEADER__
@@ -11,12 +12,16 @@
 
 
 typedef struct {
-   int x;
+   int x; /* en pixels */
    int y;
    int dir;
+   SDL_Texture * t_up;
+   SDL_Texture * t_left;
+   SDL_Texture * t_right;
+   SDL_Texture * t_down;
 } charac_t;
 
 
-charac_t new_charac(int x, int y); /* depart DIR_STOP */
+charac_t new_charac(int x, int y, int dir);
 
 #endif
