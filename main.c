@@ -1,7 +1,9 @@
 #include <stdio.h>
 
-#define HauteurFenetre 550
-#define LargeurFenetre 950
+#define HAUTEUR_FENETRE 600
+#define LARGEUR_FENETRE 950
+
+#define TAILLE_BLOC 50
 
 #include "evenement.h"
 #include "display.h"
@@ -17,6 +19,7 @@ int main()
   charac_t player;
   SDL_Renderer * renderer;
 
+  map_t map;
   int x_init_player;
   int y_init_player;
 
@@ -54,7 +57,7 @@ int main()
   window = SDL_CreateWindow("Carbonara",
                             SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED,
-                            LargeurFenetre,HauteurFenetre,
+                            LARGEUR_FENETRE,HAUTEUR_FENETRE,
                             0);
 
   if(!window){
@@ -90,7 +93,7 @@ int main()
   while(run){
     time += 1;
     evenement(&run, &event, &touche);
-    evenementPlay(&touche, &player);
+    evenementPlay(&map, &touche, &player);
 
     /*displayAll(renderer, )*/
     /*TO DO*/
