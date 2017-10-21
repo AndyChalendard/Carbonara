@@ -47,7 +47,7 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
     player->y = caseY * TAILLE_BLOC + 50;*/
 }
 
-
+/*
 
 void moveEnnemy(map_t map, int i) {
    int mapX = pc->x / TAILLE_BLOC;
@@ -125,7 +125,7 @@ int gestionCollision(map_t m, charac_t * pc, int dir) {
    return collision;
 }
 
-
+*/
 void evenement(int * run, SDL_Event * event, data_touche * touche)
 {
   while(SDL_PollEvent(event)){
