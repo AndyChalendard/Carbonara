@@ -2,8 +2,8 @@
 
 CC=gcc
 
-CFLAGS=-Wall -Wextra -ansi -pedantic -Wchar-subscripts -Wdouble-promotion #-Werror -Wcomment -Wformat
-LDFLAGS=-lSDL2 -lSDL2_ttf
+CFLAGS=-Wall -Wextra -ansi -pedantic -Wchar-subscripts -Wdouble-promotion -Werror -Wcomment -Wformat
+LDFLAGS=-lSDL2 -lSDL2_ttf -lSDL2_image -lSDL_mixer
 
 OBJ=main.o map.o charac.o evenement.o display.o # engine.o
 

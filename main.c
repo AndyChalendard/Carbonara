@@ -18,7 +18,7 @@ int main()
   int x_init_player;
   int y_init_player;
 
-  char fileMap[] = "data/map.txt";
+  char fileMap[] = "Data/map.txt";
 
   /* variable d'initialisation de SDL_image */
   int flags = IMG_INIT_JPG | IMG_INIT_PNG;
