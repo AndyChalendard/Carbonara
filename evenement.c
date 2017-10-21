@@ -18,11 +18,6 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
   int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
 
-  block_t bgh = *getBlockOnMap(map, caseX-1, caseY-1);
-  block_t bgb = *getBlockOnMap(map, caseX-1, caseY+1);
-  block_t bdh = *getBlockOnMap(map, caseX+1, caseY-1);
-  block_t bdb = *getBlockOnMap(map, caseX+1, caseY+1);
-
   /*Déplacement du personnage*/
   if (touche->haut == 1)
   {
