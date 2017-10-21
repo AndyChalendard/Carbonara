@@ -3,6 +3,7 @@
 void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max)
 {
   displayMap(renderer, map);
+  displayEnnemies(renderer, map);
   displayCharac(renderer, charac);
   displayTime(renderer, time, time_max);
 
@@ -28,6 +29,16 @@ void displayMap(SDL_Renderer * renderer, map_t map)
 
       SDL_RenderCopy(renderer,block->t,NULL,&rect);
     }
+  }
+}
+
+void displayEnnemies(SDL_Renderer * renderer, map_t map)
+{
+  int i;
+
+  for (i = 0; i<map.nbEnnemies; i++)
+  {
+    displayCharac(renderer, *(map.ennemies + i));
   }
 }
 
