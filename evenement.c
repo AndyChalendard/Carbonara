@@ -29,23 +29,23 @@ void moveEnnemy(map_t map, int i) {
    switch (map.ennemies[i].dir) {
       case DIR_LEFT:
          map.ennemies[i].x -= SPEED_ENNEMY;
+   /*      gestionCollision(map, map.ennemies + i, DIR_LEFT);*/
          ennemyChangeDir(map, i);
-         gestionCollision(map, map.ennemies + i, DIR_LEFT);
          break;
       case DIR_RIGHT:
          map.ennemies[i].x += SPEED_ENNEMY;
+      /*   gestionCollision(map, map.ennemies + i, DIR_RIGHT);*/
          ennemyChangeDir(map, i);
-         gestionCollision(map, map.ennemies + i, DIR_RIGHT);
          break;
       case DIR_UP:
          map.ennemies[i].y -= SPEED_ENNEMY;
+      /*   gestionCollision(map, map.ennemies + i, DIR_UP);*/
          ennemyChangeDir(map, i);
-         gestionCollision(map, map.ennemies + i, DIR_UP);
          break;
       case DIR_DOWN:
          map.ennemies[i].y += SPEED_ENNEMY;
+      /*   gestionCollision(map, map.ennemies + i, DIR_DOWN);*/
          ennemyChangeDir(map, i);
-         gestionCollision(map, map.ennemies + i, DIR_DOWN);
          break;
       default:
          fprintf(stderr, "direction inconnue : %d\n", map.ennemies[i].dir);
@@ -54,22 +54,29 @@ void moveEnnemy(map_t map, int i) {
 }
 
 void ennemyChangeDir(map_t map, int i) {
-   int mapX = map.ennemies[i].x / TAILLE_BLOC;
-   int mapY = (map.ennemies[i].y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+   int mapX, mapY;
 
-   switch (map.map[mapX][mapY].opt) {
-      case BLOCK_OPT_GO_L:
-         map.ennemies[i].dir = DIR_LEFT;
-         break;
-      case BLOCK_OPT_GO_R:
-         map.ennemies[i].dir = DIR_RIGHT;
-         break;
-      case BLOCK_OPT_GO_U:
-         map.ennemies[i].dir = DIR_UP;
-         break;
-      case BLOCK_OPT_GO_D:
-         map.ennemies[i].dir = DIR_DOWN;
-         break;
+   if (
+      map.ennemies[i].x % TAILLE_BLOC < SPEED_ENNEMY &&
+      map.ennemies[i].y % TAILLE_BLOC < SPEED_ENNEMY
+   ) {
+      mapX = map.ennemies[i].x / TAILLE_BLOC;
+      mapY = (map.ennemies[i].y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+
+      switch (map.map[mapX][mapY].opt) {
+         case BLOCK_OPT_GO_L:
+            map.ennemies[i].dir = DIR_LEFT;
+            break;
+         case BLOCK_OPT_GO_R:
+            map.ennemies[i].dir = DIR_RIGHT;
+            break;
+         case BLOCK_OPT_GO_U:
+            map.ennemies[i].dir = DIR_UP;
+            break;
+         case BLOCK_OPT_GO_D:
+            map.ennemies[i].dir = DIR_DOWN;
+            break;
+      }
    }
 }
 
