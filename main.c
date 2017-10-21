@@ -18,7 +18,7 @@ int main()
   int x_init_player;
   int y_init_player;
 
-  char fileMap[] = "Data/mapEtage1";
+  char fileMap[] = "Data/Map/etage1";
 
   /* variable d'initialisation de SDL_image */
   int flags = IMG_INIT_JPG | IMG_INIT_PNG;
@@ -88,10 +88,10 @@ int main()
   if (map.w != 0 && map.h != 0)/*TODO*/
   {
     printf("MAP initialisée !\n");
-    printf("La map fait %d*%d et contient:%d \n", map.w, map.h, map.nbEnnemies);
+    printf("La map fait %d*%d et contient:%d ennemies \n", map.w, map.h, map.nbEnnemies);
   }else{
     fprintf(stderr,"Erreur lors de la création de la MAP\n");
-    printf("La map fait %d*%d et contient:%d \n", map.w, map.h, map.nbEnnemies);
+    printf("La map fait %d*%d et contient:%d ennemies \n", map.w, map.h, map.nbEnnemies);
     freeMap(map);
     IMG_Quit();
     TTF_Quit();
