@@ -64,7 +64,7 @@ block_t * getBlockOnMap(map_t * map, int X, int Y)
   return *(*(map->map + X) + Y);
 }
 
-void initEnnemis(map_t * map)
+void initEnnemis(SDL_Renderer * renderer, map_t * map)
 {
   charac_t * ennemie;
   int i;
@@ -78,12 +78,27 @@ void initEnnemis(map_t * map)
 
     s=IMG_Load("Textures/ennemie.png");
     if(s){
-      ennemie->t = SDL_CreateTextureFromSurface(data.renderer,s);
+      ennemie->t = SDL_CreateTextureFromSurface(renderer,s);
       SDL_FreeSurface(s);
-      if(!ennemie->t)
-        close(map);
     }
   }
+}
+
+void initPlayerTexture(SDL_Renderer * renderer, charac_t * player)
+{
+  SDL_Surface * s;
+
+  s=IMG_Load("Textures/player.png");
+  if(s){
+    player->t = SDL_CreateTextureFromSurface(renderer,s);
+    SDL_FreeSurface(s);
+  }
+}
+
+void closePlayer(charac_t * player)
+{
+  if(player->t)
+    SDL_DestroyTexture(player->t);
 }
 
 void closeEnnemies(map_t * map)
@@ -100,7 +115,8 @@ void closeEnnemies(map_t * map)
   }
 }
 
-void close(map_t * map)
+void closeTexture(map_t * map, charac_t * player)
 {
   closeEnnemies(map);
+  closePlayer(player);
 }

@@ -82,10 +82,11 @@ int main()
   x_init_player = 0;
   y_init_player = 0;
   /*TO DO: définir la variable "map"*/
-  initEnnemis(&map);
+  initEnnemis(renderer, &map);
 
   /*initialisation des différentes variables*/
   player = new_charac(x_init_player*TAILLE_BLOC, y_init_player*TAILLE_BLOC+50, DIR_STOP);
+  initPlayerTexture(renderer, &player);
 
   /*initialisation des evenements clavier*/
   touche = init_touche();
@@ -101,9 +102,11 @@ int main()
     SDL_Delay(32);
   }
 
+  closeTexture(&map, &player);
+
   /* on libere le renderer */
   if(renderer)
-        SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(renderer);
 
   /* on libere la fenetre */
   SDL_DestroyWindow(window);

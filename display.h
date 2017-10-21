@@ -20,6 +20,11 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max);
 
 block_t * getBlockOnMap(map_t * map, int X, int Y);
 
-void initEnnemis(map_t * map);
+void initEnnemis(SDL_Renderer * renderer, map_t * map);
+void initPlayerTexture(SDL_Renderer * renderer, charac_t * player);
+
+void closePlayer(charac_t * player);
+void closeEnnemies(map_t * map);
+void closeTexture(map_t * map, charac_t * player);
 
 #endif
