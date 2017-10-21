@@ -103,11 +103,18 @@ void initMapTexture(SDL_Renderer * renderer, map_t * map)
   int i=0, j=0;
   block_t * block;
   SDL_Surface * s;
-  SDL_Texture * t;
+  SDL_Texture * mur;
+  SDL_Texture * sol;
 
   s=IMG_Load("Textures/sol.png");
   if(s){
-    t = SDL_CreateTextureFromSurface(renderer,s);
+    sol = SDL_CreateTextureFromSurface(renderer,s);
+    SDL_FreeSurface(s);
+  }
+
+  s=IMG_Load("Textures/mur.png");
+  if(s){
+    mur = SDL_CreateTextureFromSurface(renderer,s);
     SDL_FreeSurface(s);
   }
 
@@ -116,7 +123,16 @@ void initMapTexture(SDL_Renderer * renderer, map_t * map)
     for (j=0; j<map->h; j++)
     {
       block = getBlockOnMap(map, i, j);
-      block->t = t;
+      switch (block->id)
+      {
+        case BLOCK_ID_WALL:
+          block->t = mur;
+          break;
+        case BLOCK_ID_END:
+        case BLOCK_ID_GRND:
+          block->t = sol;
+          break;
+      }
     }
   }
 }
