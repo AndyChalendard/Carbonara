@@ -21,8 +21,8 @@ void displayEnnemies(SDL_Renderer * renderer, map_t map);
 void displayCharac(SDL_Renderer * renderer, charac_t charac);
 void displayTime(SDL_Renderer * renderer, int time, int time_max);
 
-int loadGame(SDL_Renderer * renderer, char fileMap[], map_t * map, charac_t * player);
-int reloadGame(SDL_Renderer * renderer, char fileMap[], map_t * map, charac_t * player);
+int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);
+int reloadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);
 
 block_t * getBlockOnMap(map_t * map, int X, int Y);
 

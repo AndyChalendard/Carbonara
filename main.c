@@ -10,6 +10,7 @@ int main()
   int time = 0;
   int timeMax = 3600;
   data_touche touche;
+  int mapAct = 1;
 
   charac_t player;
   SDL_Renderer * renderer;
@@ -76,7 +77,8 @@ int main()
   printf("SDL initialisée !\n");
 
   /*intialisation de la map et du joueur*/
-  if (loadGame(renderer, "Data/Map/etage1", &map, &player) == 1)
+
+  if (loadGame(renderer, mapAct, &map, &player) == 1)
   {
     IMG_Quit();
     TTF_Quit();
@@ -101,7 +103,7 @@ int main()
     if (time > timeMax)
     {
       time = 0;
-      if (reloadGame(renderer, "Data/Map/etage1", &map, &player))
+      if (reloadGame(renderer, mapAct, &map, &player))
       {
         IMG_Quit();
         TTF_Quit();

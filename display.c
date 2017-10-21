@@ -87,11 +87,13 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max)
   SDL_RenderFillRect(renderer, &rect);
 }
 
-int loadGame(SDL_Renderer * renderer, char fileMap[], map_t * map, charac_t * player)
+int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
 {
   int x_init_player = 0;
   int y_init_player = 0;
 
+  char fileMap[16] = "Data/Map/etage";
+  sprintf(fileMap, "%d", level);
   *map = mapFromFile(fileMap, &x_init_player, &y_init_player);
   initMapTexture(renderer, map);
   if (map->w != 0 && map->h != 0)
@@ -115,11 +117,11 @@ int loadGame(SDL_Renderer * renderer, char fileMap[], map_t * map, charac_t * pl
   return 0;
 }
 
-int reloadGame(SDL_Renderer * renderer, char fileMap[], map_t * map, charac_t * player)
+int reloadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
 {
   freeMap(*map);
 
-  return loadGame(renderer, fileMap, map, player);;
+  return loadGame(renderer, level, map, player);;
 }
 
 block_t * getBlockOnMap(map_t * map, int X, int Y)
