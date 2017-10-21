@@ -196,7 +196,7 @@ void convertFile(char * fileName, char * newFile) {
                   fprintf(pt, "%d ", FIC_CODE_q);
                   break;
                case 'P' :
-                  fprintf(pt, "%d", FIC_CODE_P);
+                  fprintf(pt, "%d ", FIC_CODE_P);
                default:
                   break;
             }

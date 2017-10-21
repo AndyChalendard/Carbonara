@@ -12,8 +12,6 @@
 #define SPEED_ENNEMY 6
 #define SPEED_SELF   8
 
-#define DETECT_DEPTH 4 /* ennemi compris */
-
 typedef struct{
   int haut;
   int bas;

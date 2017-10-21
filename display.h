@@ -14,12 +14,16 @@
 #define TAILLE_BLOC 50
 #define HAUTEUR_TEMPS 50
 
+#define DETECT_DEPTH 4 /* ennemi compris */
+
 void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max);
 
 void displayMap(SDL_Renderer * renderer, map_t map);
 void displayEnnemies(SDL_Renderer * renderer, map_t map);
 void displayCharac(SDL_Renderer * renderer, charac_t charac);
 void displayTime(SDL_Renderer * renderer, int time, int time_max);
+void displayVision(SDL_Renderer * renderer, map_t map);
+
 
 int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);
 int reloadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);
