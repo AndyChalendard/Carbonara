@@ -1,4 +1,5 @@
 #include "evenement.h"
+#include "charac.h"
 
 data_touche init_touche()
 {
@@ -8,6 +9,27 @@ data_touche init_touche()
   touche.gauche = 0;
   touche.droite = 0;
   return touche;
+}
+
+void evenementPlay(data_touche * touche, charac_t * player)
+{
+  if (touche->haut == 1)
+    player->x -= 2;
+  if (touche->bas == 1)
+    player->x += 2;
+  if (touche->gauche == 1)
+    player->y -= 2;
+  if (touche->droite ==1)
+    player->y += 2;
+
+  if (player->x < 0)
+    player->x = 0;
+  if (player->x > LargeurFenetre)
+    player->x = LargeurFenetre;
+  if (player->y < 50)
+    player->y = 50;
+  if (player->y > HauteurFenetre)
+    player->y = HauteurFenetre;
 }
 
 void evenement(int * run, SDL_Event * event, data_touche * touche)

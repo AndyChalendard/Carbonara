@@ -13,8 +13,12 @@ int main()
   int time = 0;
   int timeMax = 0;
   data_touche touche;
-  
+
+  charac_t player;
   SDL_Renderer * renderer;
+
+  int x_init_player;
+  int y_init_player;
 
   /* variable d'initialisation de SDL_image */
   int flags = IMG_INIT_JPG | IMG_INIT_PNG;
@@ -71,6 +75,14 @@ int main()
     return EXIT_FAILURE;
   }
 
+  /*intialisation de la map*/
+  x_init_player = 0;
+  y_init_player = 0;
+  /*TO DO*/
+
+  /*initialisation des différentes variables*/
+  player = new_charac(x_init_player, y_init_player);
+
   /*initialisation des evenements clavier*/
   touche = init_touche();
 
@@ -78,6 +90,7 @@ int main()
   while(run){
     time += 1;
     evenement(&run, &event, &touche);
+    evenementPlay(&touche, &player);
 
     /*displayAll(renderer, )*/
     /*TO DO*/
