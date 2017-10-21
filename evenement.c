@@ -32,7 +32,6 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   /*block autour*/
   caseX = (player->x)/TAILLE_BLOC;
   caseY = (player->y-50)/TAILLE_BLOC;
-
   blockDroite = getBlockOnMap(map, caseX+1, caseY);
   blockGauche = getBlockOnMap(map, caseX-1, caseY);
   blockBas = getBlockOnMap(map, caseX, caseY+1);
