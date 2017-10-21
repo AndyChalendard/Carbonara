@@ -16,10 +16,9 @@ map_t mapFromFile(char * fileName, int * px, int * py) {
    if (!pf) {
       fprintf(stderr, "fichier introuvable : %s\n", newFile);
    } else {
-
-      fscanf(pf, "%d ", &val); map.w = val;
-      fscanf(pf, "%d ", &val);  map.h = val;
-      fscanf(pf, "%d ", &val); map.nbEnnemies = val;
+      fscanf(pf, "%d", &val); map.w = val;
+      fscanf(pf, "%d", &val);  map.h = val;
+      fscanf(pf, "%d", &val); map.nbEnnemies = val;
 
 /* allocation map.map */
       map.map = (block_t **) malloc(map.w * sizeof(block_t *));
