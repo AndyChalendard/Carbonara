@@ -5,6 +5,11 @@
 #include "map.h"
 #include "charac.h"
 
+#ifndef __DISPLAY_HEADER__
+#define __DISPLAY_HEADER__
+
+#define TAILLE_BLOC 50
+
 void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max);
 
 void displayMap(SDL_Renderer * renderer, map_t map);
@@ -14,3 +19,6 @@ void displayCharac(SDL_Renderer * renderer, charac_t charac);
 void displayTime(SDL_Renderer * renderer, int time, int time_max);
 
 block_t * getBlockOnMap(map_t * map, int X, int Y);
+
+
+#endif
