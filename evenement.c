@@ -17,11 +17,11 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
 
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
   int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
-/*
+
   block_t bgh = *getBlockOnMap(map, caseX-1, caseY-1);
   block_t bgb = *getBlockOnMap(map, caseX-1, caseY+1);
   block_t bdh = *getBlockOnMap(map, caseX+1, caseY-1);
-  block_t bdb = *getBlockOnMap(map, caseX+1, caseY+1);*/
+  block_t bdb = *getBlockOnMap(map, caseX+1, caseY+1);
 
   /*Déplacement du personnage*/
   if (touche->haut == 1)
@@ -31,38 +31,24 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
     if (getBlockOnMap(map, caseX, caseY-1)->id == BLOCK_ID_WALL
           && (caseY*50) > player->y-50)
       player->y = last_y;
-    /*else if (bgh.id == BLOCK_ID_WALL || bdh.id == BLOCK_ID_WALL)
-      player->y = caseY*TAILLE_BLOC+50;*/
-  }
-  if (touche->bas == 1)
-  {
+  }else if (touche->bas == 1){
     player->y += TAILLE_BLOC/25;
     player->dir = DIR_DOWN;
     if (getBlockOnMap(map, caseX, caseY+1)->id == BLOCK_ID_WALL
           && (caseY*50) < player->y-50)
       player->y = last_y;
-    /*else if (bgb.id == BLOCK_ID_WALL || bdb.id == BLOCK_ID_WALL)
-      player->y = caseY*TAILLE_BLOC+50;*/
-  }
-  if (touche->gauche == 1)
-  {
+  }else if (touche->gauche == 1){
     player->x -= TAILLE_BLOC/25;
     player->dir = DIR_LEFT;
     if (getBlockOnMap(map, caseX-1, caseY)->id == BLOCK_ID_WALL
           && (caseX*50 > player->x))
       player->x = last_x;
-    /*else if (bgh.id == BLOCK_ID_WALL || bgb.id == BLOCK_ID_WALL)
-      player->x = caseX*TAILLE_BLOC;*/
-  }
-  if (touche->droite == 1)
-  {
+  }else if (touche->droite == 1){
     player->x += TAILLE_BLOC/25;
     player->dir = DIR_RIGHT;
     if (getBlockOnMap(map, caseX+1, caseY)->id == BLOCK_ID_WALL
           && (caseX)*50 < player->x)
       player->x = last_x;
-    /*else if (bdh.id == BLOCK_ID_WALL || bdb.id == BLOCK_ID_WALL)
-      player->x = caseX*TAILLE_BLOC;*/
   }
 }
 
