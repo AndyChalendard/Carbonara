@@ -17,6 +17,8 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   block_t * blockBas;
   block_t * blockHaut;
 
+  int caseX, caseY;
+
   /*Déplacement du personnage*/
   if (touche->haut == 1)
     player->x -= 2;
@@ -28,8 +30,8 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
     player->y += 2;
 
   /*block autour*/
-  int caseX = (charac->x)/TAILLE_BLOC;
-  int caseY = (charac->y-50)/TAILLE_BLOC;
+  caseX = (player->x)/TAILLE_BLOC;
+  caseY = (player->y-50)/TAILLE_BLOC;
 
   blockDroite = getBlockOnMap(map, caseX+1, caseY);
   blockGauche = getBlockOnMap(map, caseX-1, caseY);
@@ -41,9 +43,9 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   if (blockGauche->opt == BLOCK_ID_WALL && player->x < caseX * TAILLE_BLOC)
     player->x = caseX * TAILLE_BLOC;
   if (blockBas->opt == BLOCK_ID_WALL && player->y > (caseY+1) * TAILLE_BLOC)
-    player->y = (caseY+1) * TAILLE_BLOC;
+    player->y = caseY * TAILLE_BLOC + 50;
   if (blockHaut->opt == BLOCK_ID_WALL && player->y < (caseY+1) * TAILLE_BLOC)
-    player->y = (caseY+1) * TAILLE_BLOC;
+    player->y = caseY * TAILLE_BLOC + 50;
 }
 
 void evenement(int * run, SDL_Event * event, data_touche * touche)
