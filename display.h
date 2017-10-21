@@ -12,3 +12,5 @@ void displayMap(SDL_Renderer * renderer, map_t map);
 void displayCharac(SDL_Renderer * renderer, charac_t charac);
 
 void displayTime(SDL_Renderer * renderer, int time, int time_max);
+
+block_t * getBlockOnMap(map_t * map, int X, int Y);

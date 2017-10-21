@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 
 #include "charac.h"
+#include "map.h"
+#include "display.h"
 
 typedef struct{
   int haut;
@@ -9,7 +11,7 @@ typedef struct{
   int droite;
 }data_touche;
 
-void evenementPlay(data_touche * touche, charac_t * player);
+void evenementPlay(map_t * map, data_touche * touche, charac_t * player);
 
 void evenement(int * run, SDL_Event * event, data_touche * touche);
 
