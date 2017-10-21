@@ -42,7 +42,7 @@ int main()
   }
 
   /* ouverture de la fenetre */
-  window = SDL_CreateWindow("KroRunner",
+  window = SDL_CreateWindow("Carbonara",
                             SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED,
                             LargeurFenetre,HauteurFenetre,
