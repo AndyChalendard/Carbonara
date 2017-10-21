@@ -116,6 +116,7 @@ void convertFile(char * fileName, char * newFile) {
    FILE * pf = NULL; /* file */
    FILE * pt = NULL; /* target */
    char c;
+   int val;
 
    pf = fopen(fileName, "r");
 
@@ -126,6 +127,16 @@ void convertFile(char * fileName, char * newFile) {
       if (!pt) {
          fprintf(stderr, "erreur ouverture %s\n", newFile);
       } else {
+        /* longueur */
+        fscanf(pf, "%d", &val);
+        fprintf(pt, "%d ", val);
+        /* hauteur */
+        fscanf(pf, "%d", &val);
+        fprintf(pt, "%d ", val);
+        /* nbEnnemies */
+        fscanf(pf, "%d", &val);
+        fprintf(pt, "%d ", val);
+
          do {
             c = fgetc(pf);
 
