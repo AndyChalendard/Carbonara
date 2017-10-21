@@ -6,6 +6,7 @@ map_t mapFromFile(char * fileName, int * px, int * py) {
    map_t map;
    char * newFile = ".carteBis.txt";
    int code;
+   int val;
 
 /* conversion de la carte */
    convertFile(fileName, newFile);
@@ -15,9 +16,10 @@ map_t mapFromFile(char * fileName, int * px, int * py) {
    if (!pf) {
       fprintf(stderr, "fichier introuvable : %s\n", newFile);
    } else {
-      fscanf(pf, "%d ", &(map.w));
-      fscanf(pf, "%d ", &(map.h));
-      fscanf(pf, "%d ", &(map.nbEnnemies));
+
+      fscanf(pf, "%d ", &val); map.w = val;
+      fscanf(pf, "%d ", &val);  map.h = val;
+      fscanf(pf, "%d ", &val); map.nbEnnemies = val;
 
 /* allocation map.map */
       map.map = (block_t **) malloc(map.w * sizeof(block_t *));
