@@ -28,40 +28,40 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   {
     player->y -= TAILLE_BLOC/25;
     player->dir = DIR_UP;
-    gestionCollision(*map, player, player->dir);
-    /*if (getBlockOnMap(map, caseX, caseY+1)->id == BLOCK_ID_WALL)
+    if (getBlockOnMap(map, caseX, caseY-1)->id == BLOCK_ID_WALL
+          && (caseY*50) > player->y-50)
       player->y = last_y;
-    else if (bgh.id == BLOCK_ID_WALL || bdh.id == BLOCK_ID_WALL)
+    /*else if (bgh.id == BLOCK_ID_WALL || bdh.id == BLOCK_ID_WALL)
       player->y = caseY*TAILLE_BLOC+50;*/
   }
   if (touche->bas == 1)
   {
     player->y += TAILLE_BLOC/25;
     player->dir = DIR_DOWN;
-    gestionCollision(*map, player, player->dir);
-    /*if (getBlockOnMap(map, caseX, caseY)->id == BLOCK_ID_WALL)
+    if (getBlockOnMap(map, caseX, caseY+1)->id == BLOCK_ID_WALL
+          && (caseY*50) < player->y-50)
       player->y = last_y;
-    else if (bgb.id == BLOCK_ID_WALL || bdb.id == BLOCK_ID_WALL)
+    /*else if (bgb.id == BLOCK_ID_WALL || bdb.id == BLOCK_ID_WALL)
       player->y = caseY*TAILLE_BLOC+50;*/
   }
   if (touche->gauche == 1)
   {
     player->x -= TAILLE_BLOC/25;
     player->dir = DIR_LEFT;
-    gestionCollision(*map, player, player->dir);
-    /*if (getBlockOnMap(map, caseX, caseY)->id == BLOCK_ID_WALL)
-      player->x += last_x;
-    else if (bgh.id == BLOCK_ID_WALL || bgb.id == BLOCK_ID_WALL)
+    if (getBlockOnMap(map, caseX-1, caseY)->id == BLOCK_ID_WALL
+          && (caseX*50 > player->x))
+      player->x = last_x;
+    /*else if (bgh.id == BLOCK_ID_WALL || bgb.id == BLOCK_ID_WALL)
       player->x = caseX*TAILLE_BLOC;*/
   }
   if (touche->droite == 1)
   {
     player->x += TAILLE_BLOC/25;
     player->dir = DIR_RIGHT;
-    gestionCollision(*map, player, player->dir);
-    /*if (getBlockOnMap(map, caseX, caseY)->id == BLOCK_ID_WALL)
-      player->x += last_x;
-    else if (bdh.id == BLOCK_ID_WALL || bdb.id == BLOCK_ID_WALL)
+    if (getBlockOnMap(map, caseX+1, caseY)->id == BLOCK_ID_WALL
+          && (caseX)*50 < player->x)
+      player->x = last_x;
+    /*else if (bdh.id == BLOCK_ID_WALL || bdb.id == BLOCK_ID_WALL)
       player->x = caseX*TAILLE_BLOC;*/
   }
 }
