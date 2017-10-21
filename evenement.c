@@ -18,20 +18,29 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
   int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
 
-  teleport(*map, player);
-  switch (getBlockOnMap(map, caseX, caseY-1)->opt)
+  block_t * block = getBlockOnMap(map, caseX, caseY-1);
+  int decallage = 5;
+
+  if ((caseX*TAILLE_BLOC) + decallage > player->x && (caseX*TAILLE_BLOC) - decallage < player->x)/* coordonnée X*/
   {
-    case BLOCK_OPT_END:
-      *(mapAct) = *(mapAct) + 1;
-      *time = 0;
-      if (reloadGame(renderer, *mapAct, map, player))
+    if ((caseY*TAILLE_BLOC) + decallage > player->y-50 && (caseY*TAILLE_BLOC) - decallage < player->y-50)/* coordonnée X*/
+    {
+      teleport(*map, player);
+      switch (block->opt)
       {
-        IMG_Quit();
-        TTF_Quit();
-        SDL_Quit();
-        return 1;
+        case BLOCK_OPT_END:
+          *(mapAct) = *(mapAct) + 1;
+          *time = 0;
+          if (reloadGame(renderer, *mapAct, map, player))
+          {
+            IMG_Quit();
+            TTF_Quit();
+            SDL_Quit();
+            return 1;
+          }
+          break;
       }
-      break;
+    }
   }
 
   /*Déplacement du personnage*/
