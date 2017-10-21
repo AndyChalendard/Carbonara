@@ -61,7 +61,7 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max)
 
 block_t * getBlockOnMap(map_t * map, int X, int Y)
 {
-  return map->map[0] + 0;
+  return map->map[X] + Y;
 }
 
 void initEnnemis(SDL_Renderer * renderer, map_t * map)

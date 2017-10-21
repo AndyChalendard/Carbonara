@@ -83,7 +83,7 @@ int main()
   x_init_player = 0;
   y_init_player = 0;
 
-  mapFromFile(fileMap, &x_init_player, &y_init_player);
+  map = mapFromFile(fileMap, &x_init_player, &y_init_player);
   initMapTexture(renderer, &map);
   if (map.w != 0 && map.h != 0)/*TODO*/
   {
@@ -91,6 +91,7 @@ int main()
     printf("La map fait %d*%d et contient:%d \n", map.w, map.h, map.nbEnnemies);
   }else{
     fprintf(stderr,"Erreur lors de la création de la MAP\n");
+    printf("La map fait %d*%d et contient:%d \n", map.w, map.h, map.nbEnnemies);
     freeMap(map);
     IMG_Quit();
     TTF_Quit();
@@ -111,10 +112,10 @@ int main()
   /* boucle d'evenement */
   while(run){
     time += 1;
-    evenement(&run, &event, &touche);printf("1\n");
-    evenementPlay(&map, &touche, &player);printf("2\n");
+    evenement(&run, &event, &touche);
+    evenementPlay(&map, &touche, &player);;
 
-    displayAll(renderer, map, player, time, timeMax);printf("3\n");
+    displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);
   }
 
