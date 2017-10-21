@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#define HauteurFenetre 560
-#define LargeurFenetre 960
+#define HauteurFenetre 550
+#define LargeurFenetre 950
 
 #include "display.h"
 #include "charac.h"
@@ -10,6 +10,8 @@
 int main()
 {
   int time = 0;
+  int timeMax = 0;
+  SDL_Renderer * renderer;
 
   /* variable d'initialisation de SDL_image */
   int flags = IMG_INIT_JPG | IMG_INIT_PNG;
@@ -56,6 +58,16 @@ int main()
     return EXIT_FAILURE;
   }
 
+  /* initialisation du renderer */
+  renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+  if(!renderer){
+    fprintf(stderr,"Erreur de creation du renderer\n");
+    IMG_Quit();
+    TTF_Quit();
+    SDL_Quit();
+    return EXIT_FAILURE;
+  }
+
   /*initialisation des evenements clavier*/
   touche = init_touche();
 
@@ -64,9 +76,14 @@ int main()
     time += 1;
     evenement(&run, &event, &touche);
 
-
+    /*displayAll(renderer, )*/
+    /*TO DO*/
     SDL_Delay(32);
   }
+
+  /* on libere le renderer */
+  if(data.renderer)
+        SDL_DestroyRenderer(data.renderer);
 
   /* on libere la fenetre */
   SDL_DestroyWindow(window);
