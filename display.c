@@ -12,6 +12,7 @@ void displayAll(SDL_Renderer * renderer, int * pause, TTF_Font * font, map_t map
     displayPause(renderer, font);
   }
 
+  displayVision(renderer, map);
   /* finalisation de l'affichage */
   SDL_RenderPresent(renderer);
 }
@@ -182,13 +183,23 @@ int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
   return 0;
 }
 
-
-
 void displayVision(SDL_Renderer * renderer, map_t map) {
    int i, k;
    int eX, eY;
 
-   /* generer surface */
+   SDL_Rect rect;
+   SDL_Surface * s;
+   SDL_Texture * t;
+
+   rect.w = TAILLE_BLOC;
+   rect.h = TAILLE_BLOC;
+
+   s=IMG_Load("Textures/vision.png");
+   if(s!=NULL){
+     t = SDL_CreateTextureFromSurface(renderer,s);
+
+     SDL_FreeSurface(s);
+   }
 
    for (k = 0; k < map.nbEnnemies; ++k) {
       eX = map.ennemies[k].x / TAILLE_BLOC;
@@ -198,73 +209,100 @@ void displayVision(SDL_Renderer * renderer, map_t map) {
          case DIR_LEFT:
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX-i][eY].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX-i)*TAILLE_BLOC;
+              rect.y = eY*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX-i][eY-1].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = eX-i*TAILLE_BLOC;
+              rect.y = (eY-1)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX-i][eY+1].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = eX-i*TAILLE_BLOC;
+              rect.y = eY+1*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             break;
          case DIR_RIGHT:
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX+i][eY].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX+i)*TAILLE_BLOC;
+              rect.y = eY*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX+i][eY-1].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX+i)*TAILLE_BLOC;
+              rect.y = (eY-1)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX+i][eY+1].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX+i)*TAILLE_BLOC;
+              rect.y = (eY+1)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             break;
          case DIR_UP:
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX][eY-i].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX)*TAILLE_BLOC;
+              rect.y = (eY-i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX-1][eY-i].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX-1)*TAILLE_BLOC;
+              rect.y = (eY-i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX+1][eY-i].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX+1)*TAILLE_BLOC;
+              rect.y = (eY-i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             break;
          case DIR_DOWN:
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX][eY+i].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX)*TAILLE_BLOC;
+              rect.y = (eY+i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX-1][eY+i].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX-1)*TAILLE_BLOC;
+              rect.y = (eY+i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX+1][eY+i].id != BLOCK_ID_WALL) {
-               /* afficher ombre */
+              rect.x = (eX+1)*TAILLE_BLOC;
+              rect.y = (eY+i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             break;
       }
    }
+
+   if(t)
+     SDL_DestroyTexture(t);
 }
 
 
