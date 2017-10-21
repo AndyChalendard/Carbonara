@@ -28,6 +28,8 @@ int main()
   SDL_Event event;
   int run = 1;
 
+  printf("Variables initialisées !\n");
+
   /* initialisation de la SDL2 */
   if(SDL_Init(SDL_INIT_VIDEO) == 1){
       fprintf(stderr,"Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -75,30 +77,48 @@ int main()
     return EXIT_FAILURE;
   }
 
+  printf("SDL initialisée !\n");
+
   /*intialisation de la map*/
   x_init_player = 0;
   y_init_player = 0;
 
   mapFromFile(fileMap, &x_init_player, &y_init_player);
   initMapTexture(renderer, &map);
-  initEnnemis(renderer, &map);
+  if (map.w != 0 && map.h != 0)/*TODO*/
+  {
+    printf("MAP initialisée !\n");
+    printf("La map fait %d*%d et contient:%d \n", map.w, map.h, map.nbEnnemies);
+  }else{
+    fprintf(stderr,"Erreur lors de la création de la MAP\n");
+    freeMap(map);
+    IMG_Quit();
+    TTF_Quit();
+    SDL_Quit();
+    return EXIT_FAILURE;
+  }
 
   /*initialisation des différentes variables*/
+  initEnnemis(renderer, &map);
   player = new_charac(x_init_player*TAILLE_BLOC, y_init_player*TAILLE_BLOC+50, DIR_STOP);
   initPlayerTexture(renderer, &player);
+  printf("Ennemies et joueur initialisé !\n");
 
   /*initialisation des evenements clavier*/
   touche = init_touche();
+  printf("Evenements initialisés !\n");
 
   /* boucle d'evenement */
   while(run){
     time += 1;
-    evenement(&run, &event, &touche);
-    evenementPlay(&map, &touche, &player);
+    evenement(&run, &event, &touche);printf("1\n");
+    evenementPlay(&map, &touche, &player);printf("2\n");
 
-    displayAll(renderer, map, player, time, timeMax);
+    displayAll(renderer, map, player, time, timeMax);printf("3\n");
     SDL_Delay(32);
   }
+
+  printf("Déchargement du jeu...\n");
 
   closeTexture(&map, &player);
 
