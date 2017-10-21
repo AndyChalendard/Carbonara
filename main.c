@@ -84,7 +84,7 @@ int main()
   /*TO DO*/
 
   /*initialisation des différentes variables*/
-  player = new_charac(x_init_player, y_init_player);
+  player = new_charac(x_init_player, y_init_player, DIR_STOP);
 
   /*initialisation des evenements clavier*/
   touche = init_touche();
