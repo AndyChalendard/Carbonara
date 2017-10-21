@@ -81,10 +81,11 @@ int main()
   /*intialisation de la map*/
   x_init_player = 0;
   y_init_player = 0;
-  /*TO DO*/
+  /*TO DO: définir la variable "map"*/
+  initEnnemis(&map);
 
   /*initialisation des différentes variables*/
-  player = new_charac(x_init_player, y_init_player, DIR_STOP);
+  player = new_charac(x_init_player*TAILLE_BLOC, y_init_player*TAILLE_BLOC+50, DIR_STOP);
 
   /*initialisation des evenements clavier*/
   touche = init_touche();

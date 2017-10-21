@@ -63,3 +63,16 @@ block_t * getBlockOnMap(map_t * map, int X, int Y)
 {
   return *(*(map->map + X) + Y);
 }
+
+void initEnnemis(map_t * map)
+{
+  charac_t * ennemie;
+  int i;
+
+  for (i = 0; i<map->nbEnnemies; i++)
+  {
+    ennemie = map->ennemies + i;
+    ennemie->x = ennemie->x*TAILLE_BLOC;
+    ennemie->y = ennemie->y*TAILLE_BLOC + 50;
+  }
+}
