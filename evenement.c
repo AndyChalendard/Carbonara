@@ -185,14 +185,14 @@ int it_detection(map_t map, int k, charac_t c) {
       case DIR_UP:
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX][eY-i].id != BLOCK_ID_WALL) {
-            res = (cX == eX) && (cY == eY-1);
+            res = (cX == eX) && (cY == eY-i);
             ++i;
          }
          break;
       case DIR_DOWN:
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX][eY+i].id != BLOCK_ID_WALL) {
-            res = (cX == eX) && (cY == eY+1);
+            res = (cX == eX) && (cY == eY+i);
             ++i;
          }
          break;
@@ -202,7 +202,7 @@ int it_detection(map_t map, int k, charac_t c) {
 
    }
 
-   return res;
+   return res || (cX == eX && cY == eY);
 }
 
 
