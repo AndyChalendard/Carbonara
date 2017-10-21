@@ -13,13 +13,18 @@
 /* LISTE DES IDs */
 #define BLOCK_ID_WALL 2000
 #define BLOCK_ID_GRND 2001
-#define BLOCK_ID_END  2002
 
 /* LISTE DES OPTIONS */
 #define BLOCK_OPT_GO_L 3001
 #define BLOCK_OPT_GO_R 3002
 #define BLOCK_OPT_GO_U 3003
 #define BLOCK_OPT_GO_D 3004
+
+#define BLOCK_OPT_END  3005
+
+#define BLOCK_OPT_TP_Q 3006
+#define BLOCK_OPT_TP_q 3007
+
 
 /* CODES FICHIER */
 #define FIC_CODE_m 4001

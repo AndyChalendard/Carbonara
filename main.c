@@ -98,6 +98,10 @@ int main()
 
     moveEnnemyTab(map);
 
+    if (detection(map, player)) {
+      printf("detection\n");
+   }
+
     displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);
     if (time > timeMax)
