@@ -21,13 +21,13 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
 
   /*Déplacement du personnage*/
   if (touche->haut == 1)
-    player->x -= 2;
-  if (touche->bas == 1)
-    player->x += 2;
-  if (touche->gauche == 1)
     player->y -= 2;
-  if (touche->droite == 1)
+  if (touche->bas == 1)
     player->y += 2;
+  if (touche->gauche == 1)
+    player->x -= 2;
+  if (touche->droite == 1)
+    player->x += 2;
 
   /*block autour*/
   caseX = (player->x)/TAILLE_BLOC;
