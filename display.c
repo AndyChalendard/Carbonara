@@ -61,7 +61,7 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max)
 
 block_t * getBlockOnMap(map_t * map, int X, int Y)
 {
-  return *(*(map->map + X) + Y);
+  return (*(map->map + X) + Y);
 }
 
 void initEnnemis(SDL_Renderer * renderer, map_t * map)
@@ -112,7 +112,7 @@ void initMapTexture(SDL_Renderer * renderer, map_t * map)
   {
     for (j=0; j<map->h; j++)
     {
-      block = getBlockOnMap(&map, i, j);
+      block = getBlockOnMap(map, i, j);
       block->t = t;
     }
   }
@@ -127,7 +127,7 @@ void closeMapTexture(map_t * map)
   {
     for (j=0; j<map->h; j++)
     {
-      block = getBlockOnMap(&map, i, j);
+      block = getBlockOnMap(map, i, j);
       if(block->t)
         SDL_DestroyTexture(block->t);
     }
