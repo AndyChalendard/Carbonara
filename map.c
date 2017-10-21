@@ -196,7 +196,7 @@ void convertFile(char * fileName, char * newFile) {
                   fprintf(pt, "%d ", FIC_CODE_q);
                   break;
                case 'P' :
-                  fprintf(pt, "%d", FIC_CODE_P);
+                  fprintf(pt, "%d ", FIC_CODE_P);
                default:
                   break;
             }
@@ -233,14 +233,21 @@ block_opt_t * new_block_opt(int v1, int v2) {
 }
 
 void freeMap(map_t map) {
-   int i;
+   int i, j;
 
 /* liberation des blocks d'option a faire */
+   for (i = 0; i < map.w; ++i) {
+      for (j = 0; j < map.h; ++j) {
+         if (map.map[i][j].opt_data) {
+            free(map.map[i][j].opt_data);
+            map.map[i][j].opt_data = NULL;
+         }
+      }
+   }
 
    for (i = 0; i < map.w; ++i) {
       free(map.map[i]);
    }
 
    free(map.ennemies);
-
 }

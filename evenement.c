@@ -19,7 +19,7 @@ int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAc
   int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
 
   block_t * block = getBlockOnMap(map, caseX, caseY-1);
-  int decallage = 10;
+  int decallage = 13;
 
   if (*pause == 1)
   {

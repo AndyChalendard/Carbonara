@@ -182,6 +182,92 @@ int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
   return 0;
 }
 
+
+
+void displayVision(SDL_Renderer * renderer, map_t map) {
+   int i, k;
+   int eX, eY;
+
+   /* generer surface */
+
+   for (k = 0; k < map.nbEnnemies; ++k) {
+      eX = map.ennemies[k].x / TAILLE_BLOC;
+      eY = (map.ennemies[k].y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+
+      switch (map.ennemies[k].dir) {
+         case DIR_LEFT:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-i][eY].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-i][eY-1].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-i][eY+1].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            break;
+         case DIR_RIGHT:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+i][eY].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+i][eY-1].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+i][eY+1].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            break;
+         case DIR_UP:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX][eY-i].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-1][eY-i].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+1][eY-i].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            break;
+         case DIR_DOWN:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX][eY+i].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-1][eY+i].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+1][eY+i].id != BLOCK_ID_WALL) {
+               /* afficher ombre */
+               ++i;
+            }
+            break;
+      }
+   }
+}
+
+
 int reloadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
 {
   freeMap(*map);
