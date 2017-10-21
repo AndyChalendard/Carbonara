@@ -15,6 +15,8 @@
 #define BLOCK_ID_GRND 2001
 
 /* LISTE DES OPTIONS */
+#define BLOCK_OPT_STRT 3000
+
 #define BLOCK_OPT_GO_L 3001
 #define BLOCK_OPT_GO_R 3002
 #define BLOCK_OPT_GO_U 3003
@@ -24,6 +26,8 @@
 
 #define BLOCK_OPT_TP_Q 3006
 #define BLOCK_OPT_TP_q 3007
+
+#define BLOCK_OPT_PPR  3008
 
 
 /* CODES FICHIER */
@@ -45,6 +49,8 @@
 
 #define FIC_CODE_Q 4013
 #define FIC_CODE_q 4014
+
+#define FIC_CODE_P 4015
 
 
 typedef struct {
