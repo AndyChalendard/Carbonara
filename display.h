@@ -8,6 +8,9 @@
 #ifndef __DISPLAY_HEADER__
 #define __DISPLAY_HEADER__
 
+#define HAUTEUR_FENETRE 600
+#define LARGEUR_FENETRE 950
+
 #define TAILLE_BLOC 50
 
 void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max);
@@ -22,7 +25,7 @@ block_t * getBlockOnMap(map_t * map, int X, int Y);
 
 void initEnnemis(SDL_Renderer * renderer, map_t * map);
 void initPlayerTexture(SDL_Renderer * renderer, charac_t * player);
-void initMapTexture(SDL_Renderer * renderer, map_t * map)
+void initMapTexture(SDL_Renderer * renderer, map_t * map);
 
 void closeMapTexture(map_t * map);
 void closePlayer(charac_t * player);

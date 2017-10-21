@@ -1,10 +1,5 @@
 #include <stdio.h>
 
-#define HAUTEUR_FENETRE 600
-#define LARGEUR_FENETRE 950
-
-#define TAILLE_BLOC 50
-
 #include "evenement.h"
 #include "display.h"
 #include "charac.h"
@@ -22,6 +17,8 @@ int main()
   map_t map;
   int x_init_player;
   int y_init_player;
+
+  char fileMap[] = "data/map.txt";
 
   /* variable d'initialisation de SDL_image */
   int flags = IMG_INIT_JPG | IMG_INIT_PNG;
@@ -81,8 +78,8 @@ int main()
   /*intialisation de la map*/
   x_init_player = 0;
   y_init_player = 0;
-  char filename[] = "data/map.txt";
-  mapFromFile(filename, &x_init_player, &y_init_player);
+
+  mapFromFile(fileMap, &x_init_player, &y_init_player);
   initMapTexture(renderer, &map);
   initEnnemis(renderer, &map);
 

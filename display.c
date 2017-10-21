@@ -2,9 +2,9 @@
 
 void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max)
 {
-  displayMap(map);
-  displayCharac(charac);
-  displayTime(time);
+  displayMap(renderer, map);
+  displayCharac(renderer, charac);
+  displayTime(renderer, time, time_max);
 }
 
 void displayMap(SDL_Renderer * renderer, map_t map)
