@@ -94,6 +94,8 @@ int main()
     evenement(&run, &event, &touche);
     evenementPlay(&map, &touche, &player);
 
+    moveEnnemyTab(map);
+
     displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);
     if (time > timeMax)

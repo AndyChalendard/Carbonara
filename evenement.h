@@ -9,7 +9,7 @@
 #ifndef __EVENT_HEADER__
 #define __EVENT_HEADER__
 
-#define SPEED_ENNEMY 1
+#define SPEED_ENNEMY 3
 #define SPEED_SELF   2
 
 typedef struct{
