@@ -43,11 +43,21 @@
 #define FIC_CODE_h 4011
 #define FIC_CODE_b 4012
 
+#define FIC_CODE_Q 4013
+#define FIC_CODE_q 4014
+
+
+typedef struct {
+   int v1;
+   int v2;
+   SDL_Texture * t;
+} block_opt_t;
 
 typedef struct {
    int           id;
    SDL_Texture * t;
    int           opt; /* option : franchissable... */
+   block_opt_t * opt_data;
 } block_t;
 
 typedef struct {
@@ -68,7 +78,7 @@ void  freeMap(map_t map);
  */
 void convertFile(char * fileName, char * newFile);
 
-block_t new_block(int id, int opt);
+block_t new_block(int id, int opt, block_opt_t * data);
 
-
+block_opt_t * new_block_opt(int v1, int v2);
 #endif
