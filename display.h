@@ -12,6 +12,7 @@
 #define LARGEUR_FENETRE 950
 
 #define TAILLE_BLOC 50
+#define HAUTEUR_TEMPS 50
 
 void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max);
 

@@ -47,6 +47,85 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
     player->y = caseY * TAILLE_BLOC + 50;*/
 }
 
+/*
+
+void moveEnnemy(map_t map, int i) {
+   int mapX = pc->x / TAILLE_BLOC;
+   int mapY = pc->y / TAILLE_BLOC;
+
+   switch (map.ennemies[i].dir) {
+      case DIR_LEFT:
+         map.ennemies[i].x -= SPEED_ENNEMY;
+         gestionCollision(map, map.ennemies + i, DIR_LEFT);
+         break;
+      case DIR_RIGHT:
+         map.ennemies[i].x += SPEED_ENNEMY;
+         gestionCollision(map, map.ennemies + i, DIR_RIGHT);
+         break;
+      case DIR_UP:
+         map.ennemies[i].y -= SPEED_ENNEMY;
+         gestionCollision(map, map.ennemies + i, DIR_UP);
+         break;
+      case DIR_DOWN:
+         map.ennemies[i].y += SPEED_ENNEMY;
+         gestionCollision(map, map.ennemies + i, DIR_DOWN);
+         break;
+      default:
+         fprintf(stderr, "direction inconnue : %d\n", map.ennemies[i].dir);
+         break;
+   }
+
+   if (
+      map.map[mapX][mapY].opt == BLOCK_OPT_GO_L ||
+      map.map[mapX][mapY].opt == BLOCK_OPT_GO_R ||
+      map.map[mapX][mapY].opt == BLOCK_OPT_GO_U ||
+      map.map[mapX][mapY].opt == BLOCK_OPT_GO_D
+   ) {
+      map.ennemies[i].dir = map.map[mapX][mapY].opt;
+   }
+}
+
+void moveEnnemyTab(map_t m) {
+   int i;
+
+   for (i = 0; i < m.nbEnnemies; ++i) {
+      moveEnnemy(m, i);
+   }
+}
+
+int gestionCollision(map_t m, charac_t * pc, int dir) {
+   int collision = 0;
+
+   int mapX = pc->x / TAILLE_BLOC;
+   int mapY = (pc->y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+
+   switch (dir) {
+      case DIR_LEFT:
+         if (map.map[mapX-1][mapY] == BLOCK_ID_WALL) {
+            pc->x = TAILLE_BLOC * ++mapX;
+            collision = 1;
+         }
+      case DIR_RIGHT:
+         if (map.map[mapX+1][mapY] == BLOCK_ID_WALL) {
+            pc->x = TAILLE_BLOC * mapX;
+            collision = 1;
+         }
+      case DIR_UP:
+         if (map.map[mapX][mapY-1] == BLOCK_ID_WALL) {
+            pc->y = TAILLE_BLOC * ++mapY;
+            collision = 1;
+         }
+      case DIR_DOWN:
+         if (map.map[mapX][mapY+1] == BLOCK_ID_WALL) {
+            pc->y = TAILLE_BLOC * mapY;
+            collision = 1;
+         }
+   }
+
+   return collision;
+}
+
+*/
 void evenement(int * run, SDL_Event * event, data_touche * touche)
 {
   while(SDL_PollEvent(event)){
