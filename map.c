@@ -57,7 +57,7 @@ map_t mapFromFile(char * fileName, int * px, int * py) {
                            map.map[i][j] = new_block(BLOCK_ID_GRND, 0, NULL);
                            break;
                         case FIC_CODE_T :
-                           map.map[i][j] = new_block(BLOCK_ID_GRND, 0, NULL);
+                           map.map[i][j] = new_block(BLOCK_ID_GRND, BLOCK_OPT_STRT, NULL);
                            *px = i; *py = j;
                            break;
                         case FIC_CODE_A :
@@ -98,6 +98,9 @@ map_t mapFromFile(char * fileName, int * px, int * py) {
                            break;
                         case FIC_CODE_q :
                            map.map[i][j] = new_block(BLOCK_ID_GRND, BLOCK_OPT_TP_q, NULL);
+                           break;
+                        case FIC_CODE_P :
+                           map.map[i][j] = new_block(BLOCK_ID_GRND, BLOCK_OPT_PPR, NULL);
                            break;
                      }
                   }
@@ -192,6 +195,8 @@ void convertFile(char * fileName, char * newFile) {
                case 'q' :
                   fprintf(pt, "%d ", FIC_CODE_q);
                   break;
+               case 'P' :
+                  fprintf(pt, "%d", FIC_CODE_P);
                default:
                   break;
             }
