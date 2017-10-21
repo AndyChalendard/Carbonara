@@ -36,6 +36,12 @@ void displayMap(SDL_Renderer * renderer, map_t map)
         case BLOCK_OPT_END:
           s=IMG_Load("Textures/parcho.png");
           break;
+        case BLOCK_OPT_TP_Q:
+          s=IMG_Load("Textures/tpdepart.png");
+          break;
+        case BLOCK_OPT_TP_q:
+          s=IMG_Load("Textures/tparrivee.png");
+          break;
       }
       if(s!=NULL){
         t = SDL_CreateTextureFromSurface(renderer,s);
