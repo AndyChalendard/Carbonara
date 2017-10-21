@@ -8,13 +8,12 @@
 #define __MAP_HEADER__
 
 
-// liste des dir -> charac.h
+/* liste des dir -> charac.h */
 
 /* LISTE DES IDs */
 #define BLOCK_ID_WALL 2000
 #define BLOCK_ID_GRND 2001
-#define BLOCK_ID_STRT 2002
-#define BLOCK_ID_END  2003
+#define BLOCK_ID_END  2002
 
 /* LISTE DES OPTIONS */
 #define BLOCK_OPT_GO_L 3001
@@ -41,6 +40,12 @@
 
 
 typedef struct {
+   int           id;
+   SDL_Texture * t;
+   int           opt; /* option : franchissable... */
+} block_t;
+
+typedef struct {
    int         w; /* longueur */
    int         h; /* hauteur  */
    block_t **  map;
@@ -48,16 +53,10 @@ typedef struct {
    int         nbEnnemies;
 } map_t;
 
-typedef struct {
-   int           id;
-   SDL_Texture * t;
-   int           opt; /* option : franchissable... */
-} block_t;
-
 
 /* x, y = position de depart du perso
  */
-map_t mapFromFile(char * fileName, int x, int y);
+map_t mapFromFile(char * fileName, int * px, int * py);
 void  freeMap(map_t map);
 
 /* convertit un texte avec des codes lettres (m/s/D/...) en codes nombres
