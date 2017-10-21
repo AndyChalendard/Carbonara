@@ -169,6 +169,8 @@ void convertFile(char * fileName, char * newFile) {
             }
 
          } while (!feof(pf));
+
+         fclose(pt);
       }
 
       fclose(pf);
