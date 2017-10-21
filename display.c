@@ -16,6 +16,8 @@ void displayMap(SDL_Renderer * renderer, map_t map)
   int i=0, j=0;
   block_t * block;
   SDL_Rect rect;
+  SDL_Surface * s = NULL;
+  SDL_Texture * t;
 
   for (i=0; i<map.w; i++)
   {
@@ -28,6 +30,22 @@ void displayMap(SDL_Renderer * renderer, map_t map)
       rect.h = TAILLE_BLOC;
 
       SDL_RenderCopy(renderer,block->t,NULL,&rect);
+
+      switch (block->opt)
+      {
+        case BLOCK_OPT_END:
+          s=IMG_Load("Textures/parcho.png");
+          break;
+      }
+      if(s!=NULL){
+        t = SDL_CreateTextureFromSurface(renderer,s);
+        SDL_RenderCopy(renderer,t,NULL,&rect);
+
+        SDL_FreeSurface(s);
+        if(t)
+          SDL_DestroyTexture(t);
+      }
+      s=NULL;
     }
   }
 }
