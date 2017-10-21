@@ -34,7 +34,13 @@ void displayMap(SDL_Renderer * renderer, map_t map)
       switch (block->opt)
       {
         case BLOCK_OPT_END:
+          s=IMG_Load("Textures/stairs_up.png");
+          break;
+        case BLOCK_OPT_PPR:
           s=IMG_Load("Textures/parcho.png");
+          break;
+        case BLOCK_OPT_STRT:
+          s=IMG_Load("Textures/stairs_down.png");
           break;
         case BLOCK_OPT_TP_Q:
           s=IMG_Load("Textures/tpdepart.png");

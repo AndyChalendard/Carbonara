@@ -18,6 +18,7 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
   int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
 
+  teleport(*map, player);
   switch (getBlockOnMap(map, caseX, caseY-1)->opt)
   {
     case BLOCK_OPT_END:
@@ -30,9 +31,6 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
         SDL_Quit();
         return 1;
       }
-      break;
-    case BLOCK_OPT_TP_Q:
-      teleport(*map, player);
       break;
   }
 
@@ -72,8 +70,9 @@ void teleport(map_t map, charac_t * pc) {
    int caseY = (pc->y-HAUTEUR_TEMPS + TAILLE_BLOC/2)/TAILLE_BLOC;
 
    if (map.map[caseX][caseY].opt == BLOCK_OPT_TP_Q) {
-      pc->x = map.map[caseX][caseY].opt_data->v1;
-      pc->y = map.map[caseX][caseY].opt_data->v2;
+      pc->x = TAILLE_BLOC * map.map[caseX][caseY].opt_data->v1;
+      pc->y = TAILLE_BLOC * map.map[caseX][caseY].opt_data->v2 + HAUTEUR_TEMPS;
+
    }
 }
 
