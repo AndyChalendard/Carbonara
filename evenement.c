@@ -30,7 +30,7 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
     player->x += 2;
 
   /*block autour*/
-  caseX = (player->x)/TAILLE_BLOC;
+  /*caseX = (player->x)/TAILLE_BLOC;
   caseY = (player->y-50)/TAILLE_BLOC;
   blockDroite = getBlockOnMap(map, caseX+1, caseY);
   blockGauche = getBlockOnMap(map, caseX-1, caseY);
@@ -44,7 +44,7 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   if (blockBas->opt == BLOCK_ID_WALL && player->y > (caseY+1) * TAILLE_BLOC)
     player->y = caseY * TAILLE_BLOC + 50;
   if (blockHaut->opt == BLOCK_ID_WALL && player->y < (caseY+1) * TAILLE_BLOC)
-    player->y = caseY * TAILLE_BLOC + 50;
+    player->y = caseY * TAILLE_BLOC + 50;*/
 }
 
 void evenement(int * run, SDL_Event * event, data_touche * touche)
