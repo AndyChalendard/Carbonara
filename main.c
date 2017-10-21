@@ -94,7 +94,13 @@ int main()
   while(run){
     time += 1;
     evenement(&run, &event, &touche);
-    evenementPlay(&map, &touche, &player);
+    if (evenementPlay(renderer, &map, &mapAct, &time, &touche, &player) == 1)
+    {
+      IMG_Quit();
+      TTF_Quit();
+      SDL_Quit();
+      return EXIT_FAILURE;
+    }
 
     moveEnnemyTab(map);
 

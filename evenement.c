@@ -10,13 +10,28 @@ data_touche init_touche()
   return touche;
 }
 
-void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
+int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player)
 {
   int last_x = player->x;
   int last_y = player->y;
 
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
   int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
+
+  switch (getBlockOnMap(map, caseX, caseY-1)->opt)
+  {
+    case BLOCK_OPT_END:
+      *(mapAct) = *(mapAct) + 1;
+      *time = 0;
+      if (reloadGame(renderer, *mapAct, map, player))
+      {
+        IMG_Quit();
+        TTF_Quit();
+        SDL_Quit();
+        return 1;
+      }
+      break;
+  }
 
   /*Déplacement du personnage*/
   if (touche->haut == 1)
@@ -45,6 +60,8 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
           && (caseX)*50 < player->x)
       player->x = last_x;
   }
+
+  return 0;
 }
 
 

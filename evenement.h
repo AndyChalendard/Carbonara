@@ -22,7 +22,7 @@ typedef struct{
 }data_touche;
 
 /* deplace le personnage */
-void evenementPlay(map_t * map, data_touche * touche, charac_t * player);
+int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player);
 
 /* une iteration de moveEnnemyTab */
 void moveEnnemy(map_t map, int i);
