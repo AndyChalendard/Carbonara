@@ -41,9 +41,9 @@ void evenementPlay(map_t * map, data_touche * touche, charac_t * player)
   if (blockGauche->opt == BLOCK_ID_WALL && player->x < caseX * TAILLE_BLOC)
     player->x = caseX * TAILLE_BLOC;
   if (blockBas->opt == BLOCK_ID_WALL && player->y > (caseY+1) * TAILLE_BLOC)
-    player->y = (caseY+1) * TAILLE_BLOC;
+    player->y = caseY * TAILLE_BLOC + 50;
   if (blockHaut->opt == BLOCK_ID_WALL && player->y < (caseY+1) * TAILLE_BLOC)
-    player->y = (caseY+1) * TAILLE_BLOC;
+    player->y = caseY * TAILLE_BLOC + 50;
 }
 
 void evenement(int * run, SDL_Event * event, data_touche * touche)
