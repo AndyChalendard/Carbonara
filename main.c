@@ -77,7 +77,6 @@ int main()
   printf("SDL initialisée !\n");
 
   /*intialisation de la map et du joueur*/
-
   if (loadGame(renderer, mapAct, &map, &player) == 1)
   {
     IMG_Quit();
@@ -103,10 +102,6 @@ int main()
     }
 
     moveEnnemyTab(map);
-
-    if (detection(map, player)) {
-      printf("detection\n");
-   }
 
     displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);
