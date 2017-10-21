@@ -8,7 +8,7 @@
 int main()
 {
   int time = 0;
-  int timeMax = 1800;
+  int timeMax = 3600;
   data_touche touche;
 
   charac_t player;
