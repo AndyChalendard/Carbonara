@@ -10,7 +10,7 @@ void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, i
 void displayMap(SDL_Renderer * renderer, map_t map)
 {
   int i=0, j=0;
-  block_t block;
+  block_t * block;
   SDL_Rect rect;
 
   for (i=0; i<map.w; i++)
@@ -23,7 +23,7 @@ void displayMap(SDL_Renderer * renderer, map_t map)
       rect.w = TAILLE_BLOC;
       rect.h = TAILLE_BLOC;
 
-      SDL_RenderCopy(renderer,block.t,NULL,&rect);
+      SDL_RenderCopy(renderer,block->t,NULL,&rect);
     }
   }
 }
@@ -95,6 +95,45 @@ void initPlayerTexture(SDL_Renderer * renderer, charac_t * player)
   }
 }
 
+void initMapTexture(SDL_Renderer * renderer, map_t * map)
+{
+  int i=0, j=0;
+  block_t * block;
+  SDL_Surface * s;
+  SDL_Texture * t;
+
+  s=IMG_Load("Textures/sol.png");
+  if(s){
+    t = SDL_CreateTextureFromSurface(renderer,s);
+    SDL_FreeSurface(s);
+  }
+
+  for (i=0; i<map->w; i++)
+  {
+    for (j=0; j<map->h; j++)
+    {
+      block = getBlockOnMap(&map, i, j);
+      block->t = t;
+    }
+  }
+}
+
+void closeMapTexture(map_t * map)
+{
+  int i=0, j=0;
+  block_t * block;
+
+  for (i=0; i<map->w; i++)
+  {
+    for (j=0; j<map->h; j++)
+    {
+      block = getBlockOnMap(&map, i, j);
+      if(block->t)
+        SDL_DestroyTexture(block->t);
+    }
+  }
+}
+
 void closePlayer(charac_t * player)
 {
   if(player->t)
@@ -119,4 +158,5 @@ void closeTexture(map_t * map, charac_t * player)
 {
   closeEnnemies(map);
   closePlayer(player);
+  closeMapTexture(map);
 }

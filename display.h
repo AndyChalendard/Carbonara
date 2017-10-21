@@ -22,7 +22,9 @@ block_t * getBlockOnMap(map_t * map, int X, int Y);
 
 void initEnnemis(SDL_Renderer * renderer, map_t * map);
 void initPlayerTexture(SDL_Renderer * renderer, charac_t * player);
+void initMapTexture(SDL_Renderer * renderer, map_t * map)
 
+void closeMapTexture(map_t * map);
 void closePlayer(charac_t * player);
 void closeEnnemies(map_t * map);
 void closeTexture(map_t * map, charac_t * player);

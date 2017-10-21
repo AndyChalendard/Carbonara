@@ -82,6 +82,7 @@ int main()
   x_init_player = 0;
   y_init_player = 0;
   /*TO DO: définir la variable "map"*/
+  initMapTexture(renderer, &map);
   initEnnemis(renderer, &map);
 
   /*initialisation des différentes variables*/
