@@ -9,6 +9,8 @@
 
 int main()
 {
+  int time = 0;
+
   /* variable d'initialisation de SDL_image */
   int flags = IMG_INIT_JPG | IMG_INIT_PNG;
   /* variable liee a la fenetre */
@@ -59,6 +61,7 @@ int main()
 
   /* boucle d'evenement */
   while(run){
+    time += 1;
     evenement(&run, &event, &touche);
 
 
