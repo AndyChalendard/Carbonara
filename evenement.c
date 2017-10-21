@@ -64,8 +64,15 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
   return 0;
 }
 
+void teleport(map_t map, charac_t * pc) {
+   int caseX = (pc->x + TAILLE_BLOC/2)/TAILLE_BLOC;
+   int caseY = (pc->y-HAUTEUR_TEMPS + TAILLE_BLOC/2)/TAILLE_BLOC;
 
-
+   if (map.map[caseX][caseY].opt == BLOCK_OPT_TP_Q) {
+      pc->x = map.map[caseX][caseY].opt_data->v1;
+      pc->y = map.map[caseX][caseY].opt_data->v2;
+   }
+}
 
 
 int collides(int x, int y, charac_t c) {

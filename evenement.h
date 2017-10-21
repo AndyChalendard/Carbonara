@@ -24,7 +24,7 @@ typedef struct{
 /* deplace le personnage */
 int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player);
 
-int teleport(map_t map, charac_t * pc);
+void teleport(map_t map, charac_t * pc);
 
 /* teste la collision entre deux blocks
  * x et y en px
