@@ -13,7 +13,7 @@
 int main()
 {
   int time = 0;
-  int timeMax = 0;
+  int timeMax = 1800;
   data_touche touche;
 
   charac_t player;
@@ -99,8 +99,7 @@ int main()
     evenement(&run, &event, &touche);
     evenementPlay(&map, &touche, &player);
 
-    /*displayAll(renderer, )*/
-    /*TO DO*/
+    displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);
   }
 
