@@ -6,7 +6,10 @@ charac_t new_charac(int x, int y, int dir) {
    c.x = x;
    c.y = y;
    c.dir = dir;
-   c.t = NULL;
+   c.t_up = NULL;
+   c.t_down = NULL;
+   c.t_right = NULL;
+   c.t_left = NULL;
 
    return c;
 }

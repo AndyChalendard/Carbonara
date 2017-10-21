@@ -50,8 +50,22 @@ void displayCharac(SDL_Renderer * renderer, charac_t charac)
   rect.y = charac.y;
   rect.w = TAILLE_BLOC;
   rect.h = TAILLE_BLOC;
-
-  SDL_RenderCopy(renderer,charac.t,NULL,&rect);
+  switch (charac.dir)
+  {
+    case DIR_STOP:
+    case DIR_DOWN:
+      SDL_RenderCopy(renderer,charac.t_down,NULL,&rect);
+      break;
+    case DIR_UP:
+      SDL_RenderCopy(renderer,charac.t_up,NULL,&rect);
+      break;
+    case DIR_RIGHT:
+      SDL_RenderCopy(renderer,charac.t_right,NULL,&rect);
+      break;
+    case DIR_LEFT:
+      SDL_RenderCopy(renderer,charac.t_left,NULL,&rect);
+      break;
+  }
 }
 
 void displayTime(SDL_Renderer * renderer, int time, int time_max)
@@ -125,9 +139,24 @@ void initEnnemis(SDL_Renderer * renderer, map_t * map)
     ennemie->x = ennemie->x*TAILLE_BLOC;
     ennemie->y = ennemie->y*TAILLE_BLOC + 50;
 
-    s=IMG_Load("Textures/ennemie.png");
+    s=IMG_Load("Textures/ennemie_droite.png");
     if(s){
-      ennemie->t = SDL_CreateTextureFromSurface(renderer,s);
+      ennemie->t_right = SDL_CreateTextureFromSurface(renderer,s);
+      SDL_FreeSurface(s);
+    }
+    s=IMG_Load("Textures/ennemie_gauche.png");
+    if(s){
+      ennemie->t_left = SDL_CreateTextureFromSurface(renderer,s);
+      SDL_FreeSurface(s);
+    }
+    s=IMG_Load("Textures/ennemie_haut.png");
+    if(s){
+      ennemie->t_up = SDL_CreateTextureFromSurface(renderer,s);
+      SDL_FreeSurface(s);
+    }
+    s=IMG_Load("Textures/ennemie_bas.png");
+    if(s){
+      ennemie->t_down = SDL_CreateTextureFromSurface(renderer,s);
       SDL_FreeSurface(s);
     }
   }
@@ -137,9 +166,24 @@ void initPlayerTexture(SDL_Renderer * renderer, charac_t * player)
 {
   SDL_Surface * s;
 
-  s=IMG_Load("Textures/player.png");
+  s=IMG_Load("Textures/player_droite.png");
   if(s){
-    player->t = SDL_CreateTextureFromSurface(renderer,s);
+    player->t_right = SDL_CreateTextureFromSurface(renderer,s);
+    SDL_FreeSurface(s);
+  }
+  s=IMG_Load("Textures/player_gauche.png");
+  if(s){
+    player->t_left = SDL_CreateTextureFromSurface(renderer,s);
+    SDL_FreeSurface(s);
+  }
+  s=IMG_Load("Textures/player_haut.png");
+  if(s){
+    player->t_up = SDL_CreateTextureFromSurface(renderer,s);
+    SDL_FreeSurface(s);
+  }
+  s=IMG_Load("Textures/player_bas.png");
+  if(s){
+    player->t_down = SDL_CreateTextureFromSurface(renderer,s);
     SDL_FreeSurface(s);
   }
 }
@@ -201,21 +245,23 @@ void closeMapTexture(map_t * map)
 
 void closePlayer(charac_t * player)
 {
-  if(player->t)
-    SDL_DestroyTexture(player->t);
+  if(player->t_down)
+    SDL_DestroyTexture(player->t_down);
+  if(player->t_up)
+    SDL_DestroyTexture(player->t_up);
+  if(player->t_right)
+    SDL_DestroyTexture(player->t_right);
+  if(player->t_left)
+    SDL_DestroyTexture(player->t_left);
 }
 
 void closeEnnemies(map_t * map)
 {
-  charac_t * ennemie;
   int i;
 
   for (i = 0; i<map->nbEnnemies; i++)
   {
-    ennemie = map->ennemies + i;
-
-    if(ennemie->t)
-      SDL_DestroyTexture(ennemie->t);
+    closePlayer(map->ennemies + i);
   }
 }
 
