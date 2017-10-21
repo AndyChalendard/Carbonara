@@ -113,7 +113,7 @@ int main()
   while(run){
     time += 1;
     evenement(&run, &event, &touche);
-    evenementPlay(&map, &touche, &player);;
+    evenementPlay(&map, &touche, &player);
 
     displayAll(renderer, map, player, time, timeMax);
     SDL_Delay(32);

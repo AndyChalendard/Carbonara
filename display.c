@@ -5,6 +5,9 @@ void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, i
   displayMap(renderer, map);
   displayCharac(renderer, charac);
   displayTime(renderer, time, time_max);
+
+  /* finalisation de l'affichage */
+  SDL_RenderPresent(renderer);
 }
 
 void displayMap(SDL_Renderer * renderer, map_t map)
