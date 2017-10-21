@@ -68,7 +68,7 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max)
   SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);
   rect.x = 10;
   rect.y = 10;
-  rect.w = (time*(LARGEUR_FENETRE-20))/time_max;
+  rect.w = (LARGEUR_FENETRE-20) - (time*(LARGEUR_FENETRE-20))/time_max;
   rect.h = 30;
   SDL_RenderFillRect(renderer, &rect);
 }
