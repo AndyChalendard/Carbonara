@@ -81,7 +81,8 @@ int main()
   /*intialisation de la map*/
   x_init_player = 0;
   y_init_player = 0;
-  /*TO DO: définir la variable "map"*/
+  char filename[] = "data/map.txt";
+  mapFromFile(filename, &x_init_player, &y_init_player);
   initMapTexture(renderer, &map);
   initEnnemis(renderer, &map);
 
