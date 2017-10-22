@@ -39,6 +39,16 @@ int playMenu(menu_t menu) {
    while (run == 2) {
       while (SDL_PollEvent(&event)) {
          switch (event.type) {
+            case SDL_KEYDOWN:
+               switch (event.key.keysym.sym) {
+                  case 27:
+                     run = 0;
+                     break;
+                  case 10:
+                  case 13:
+                     run = 1;
+                     break;
+               }
             case SDL_MOUSEBUTTONDOWN:
                if (
                   event.button.x >= 352 && event.button.y >= 365 &&
