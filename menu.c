@@ -24,8 +24,6 @@ int playMenu(menu_t menu) {
    int run = 2;
    SDL_Rect rect, imgRect;
 
-   int cpt = 0;
-
    imgRect.x = 0;
    imgRect.y = 0;
    imgRect.w = 950;
@@ -35,7 +33,9 @@ int playMenu(menu_t menu) {
    rect.h = 68;
    rect.x = 352;
 
-   printf("%d\n", ++cpt);
+   SDL_RenderCopy(menu.rdr,menu.t,NULL,&imgRect);
+   SDL_RenderPresent(menu.rdr);
+
    while (run == 2) {
       while (SDL_PollEvent(&event)) {
          switch (event.type) {
