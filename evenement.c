@@ -7,30 +7,52 @@ data_touche init_touche()
   touche.bas = 0;
   touche.gauche = 0;
   touche.droite = 0;
+  touche.space = 0;
   return touche;
 }
 
-int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player)
+int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAct, int * time, data_touche * touche, charac_t * player)
 {
   int last_x = player->x;
   int last_y = player->y;
 
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
-  int caseY = (player->y-50 + TAILLE_BLOC/2)/TAILLE_BLOC;
+  int caseY = (player->y-HAUTEUR_TEMPS + TAILLE_BLOC/2)/TAILLE_BLOC;
 
-  switch (getBlockOnMap(map, caseX, caseY-1)->opt)
+  /*block_t * block = getBlockOnMap(map, caseX, caseY-1);*/
+
+  int decallage = 13;
+
+  if (*pause == 1)
   {
-    case BLOCK_OPT_END:
-      *(mapAct) = *(mapAct) + 1;
-      *time = 0;
-      if (reloadGame(renderer, *mapAct, map, player))
-      {
-        IMG_Quit();
-        TTF_Quit();
-        SDL_Quit();
-        return 1;
+    return 0;
+  }
+
+  if ((caseX*TAILLE_BLOC) + decallage > player->x && (caseX*TAILLE_BLOC) - decallage < player->x)
+  {
+    if ((caseY*TAILLE_BLOC) + decallage > player->y-50 && (caseY*TAILLE_BLOC) - decallage < player->y-50)
+    {
+      switch (map->map[caseX][caseY].opt) {
+         case BLOCK_OPT_TP_Q:
+            teleport(*map, player);
+            break;
+         case BLOCK_OPT_END:
+            *(mapAct) = *(mapAct) + 1;
+            *time = 0;
+            if (reloadGame(renderer, *mapAct, map, player))
+            {
+              IMG_Quit();
+              TTF_Quit();
+              SDL_Quit();
+              return 1;
+            }
+            break;
+        case BLOCK_OPT_PPR:
+          *(mapAct) = 5;
+          map->map[caseX][caseY].opt = BLOCK_ID_GRND;
+          break;
       }
-      break;
+    }
   }
 
   /*Déplacement du personnage*/
@@ -62,6 +84,26 @@ int evenementPlay(SDL_Renderer * renderer, map_t * map, int * mapAct, int * time
   }
 
   return 0;
+}
+
+void teleport(map_t map, charac_t * pc) {
+   int caseX = (pc->x + TAILLE_BLOC/2)/TAILLE_BLOC;
+   int caseY = (pc->y-HAUTEUR_TEMPS + TAILLE_BLOC/2)/TAILLE_BLOC;
+
+   if (map.map[caseX][caseY].opt == BLOCK_OPT_TP_Q) {
+      pc->x = TAILLE_BLOC * map.map[caseX][caseY].opt_data->v1;
+      pc->y = TAILLE_BLOC * map.map[caseX][caseY].opt_data->v2 + HAUTEUR_TEMPS;
+   }
+}
+
+
+int collides(int x, int y, charac_t c) {
+   return (
+      c.x > x + TAILLE_BLOC ||
+      c.y > y + TAILLE_BLOC ||
+      x > c.x + TAILLE_BLOC ||
+      y > c.y + TAILLE_BLOC
+   );
 }
 
 
@@ -178,8 +220,8 @@ int it_detection(map_t map, int k, charac_t c) {
    int res = 0;
    int i = 0;
 
-   int cX = c.x / TAILLE_BLOC;
-   int cY = (c.y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+   int cX = (c.x+25) / TAILLE_BLOC;
+   int cY = ((c.y+25) - HAUTEUR_TEMPS) / TAILLE_BLOC;
 
    int eX = map.ennemies[k].x / TAILLE_BLOC;
    int eY = (map.ennemies[k].y - HAUTEUR_TEMPS) / TAILLE_BLOC;
@@ -191,11 +233,31 @@ int it_detection(map_t map, int k, charac_t c) {
             res = (cX == eX-i) && (cY == eY);
             ++i;
          }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-i][eY-1].id != BLOCK_ID_WALL) {
+            res = (cX == eX-i) && (cY == eY-1);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-i][eY+1].id != BLOCK_ID_WALL) {
+            res = (cX == eX-i) && (cY == eY+1);
+            ++i;
+         }
          break;
       case DIR_RIGHT:
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX+i][eY].id != BLOCK_ID_WALL) {
             res = (cX == eX+i) && (cY == eY);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+i][eY-1].id != BLOCK_ID_WALL) {
+            res = (cX == eX+i) && (cY == eY-1);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+i][eY+1].id != BLOCK_ID_WALL) {
+            res = (cX == eX+i) && (cY == eY+1);
             ++i;
          }
          break;
@@ -205,11 +267,31 @@ int it_detection(map_t map, int k, charac_t c) {
             res = (cX == eX) && (cY == eY-i);
             ++i;
          }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-1][eY-i].id != BLOCK_ID_WALL) {
+            res = (cX == eX-1) && (cY == eY-i);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+1][eY-i].id != BLOCK_ID_WALL) {
+            res = (cX == eX+1) && (cY == eY-i);
+            ++i;
+         }
          break;
       case DIR_DOWN:
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX][eY+i].id != BLOCK_ID_WALL) {
             res = (cX == eX) && (cY == eY+i);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX-1][eY+i].id != BLOCK_ID_WALL) {
+            res = (cX == eX-1) && (cY == eY+i);
+            ++i;
+         }
+         i = 1;
+         while (!res && i < DETECT_DEPTH && map.map[eX+1][eY+i].id != BLOCK_ID_WALL) {
+            res = (cX == eX+1) && (cY == eY+i);
             ++i;
          }
          break;
@@ -225,6 +307,7 @@ int it_detection(map_t map, int k, charac_t c) {
 
 void evenement(int * run, SDL_Event * event, data_touche * touche)
 {
+  touche->space=0;
   while(SDL_PollEvent(event)){
       switch(event->type){
       /*case SDL_MOUSEBUTTONDOWN:
@@ -244,6 +327,9 @@ void evenement(int * run, SDL_Event * event, data_touche * touche)
               break;
           case SDLK_RIGHT:
               touche->droite=1;
+              break;
+          case SDLK_SPACE:
+              touche->space=1;
               break;
           }
           break;

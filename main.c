@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "evenement.h"
 #include "display.h"
@@ -7,13 +8,19 @@
 
 int main()
 {
+  int tmp_int = 0;
   int time = 0;
-  int timeMax = 3600;
+  int cptDetection = 0;
+  int timeMax = 1800;
   data_touche touche;
   int mapAct = 1;
+  int pause = 1;
+  int mort = 0;
 
   charac_t player;
   SDL_Renderer * renderer;
+
+  TTF_Font * font;
 
   map_t map;
 
@@ -23,6 +30,12 @@ int main()
   SDL_Window * window;
   /* variables liees a la capture d'evenement */
   SDL_Event event;
+  FILE * dialogue;
+  int scene_suiv_dialogue = 0;
+  int id_dialogue=0;
+  char txt_dialogue[255] = "test234";
+  char perso_dialogue[10];
+
   int run = 1;
 
   printf("Variables initialisées !\n");
@@ -35,9 +48,9 @@ int main()
 
   /* initialisation de SDL_ttf */
   if (TTF_Init() != 0){
-    fprintf(stderr, "Erreur d'initialisation TTF : %s\n", TTF_GetError());
-    SDL_Quit();
-    return EXIT_FAILURE;
+      fprintf(stderr, "Erreur d'initialisation TTF : %s\n", TTF_GetError());
+      SDL_Quit();
+      return EXIT_FAILURE;
   }
 
   /* initialisation de SDL_image */
@@ -77,7 +90,6 @@ int main()
   printf("SDL initialisée !\n");
 
   /*intialisation de la map et du joueur*/
-
   if (loadGame(renderer, mapAct, &map, &player) == 1)
   {
     IMG_Quit();
@@ -86,29 +98,64 @@ int main()
     return EXIT_FAILURE;
   }
 
+  /*initialisation de la police*/
+  font = TTF_OpenFont("arial.ttf",20);
+
   /*initialisation des evenements clavier*/
   touche = init_touche();
   printf("Evenements initialisés !\n");
 
+  pause = 0;
+
+  dialogue = fopen("Data/dialogue", "r");
+  fscanf(dialogue, "%d%*c", &scene_suiv_dialogue);
+  fscanf(dialogue, "%d", &id_dialogue);
+  fscanf(dialogue, "%s:", perso_dialogue);
+  lireText(dialogue, txt_dialogue);
+
   /* boucle d'evenement */
   while(run){
-    time += 1;
+    /*printf("%d %d\n", scene_suiv_dialogue, mapAct);*/
+
+    if (pause == 0)
+      time += 1;
     evenement(&run, &event, &touche);
-    if (evenementPlay(renderer, &map, &mapAct, &time, &touche, &player) == 1)
+    if (evenementPlay(renderer, &pause, &map, &mapAct, &time, &touche, &player) == 1)
     {
       IMG_Quit();
       TTF_Quit();
       SDL_Quit();
+      fclose(dialogue);
       return EXIT_FAILURE;
     }
 
-    moveEnnemyTab(map);
+    if (pause == 1 && touche.space == 1)
+    {
+      fscanf(dialogue, "%d", &tmp_int);
+      if (tmp_int != 0)
+      {
+          scene_suiv_dialogue = tmp_int;
+          pause = 0;
+          fscanf(dialogue, "%d", &tmp_int);
+      }
+      id_dialogue = 0;
+      fscanf(dialogue, "%s:", perso_dialogue);
+      lireText(dialogue, txt_dialogue);
+    }
 
-    if (detection(map, player)) {
-      printf("detection\n");
-   }
+    if (pause==0)
+    {
+      moveEnnemyTab(map);
 
-    displayAll(renderer, map, player, time, timeMax);
+      if (detection(map, player)) {
+        mort++;
+        time = timeMax+1;
+        printf("detect %d\n", ++cptDetection);
+      }
+    }
+
+    displayAll(renderer, mort, perso_dialogue, &id_dialogue, txt_dialogue, &pause, font, map, player, time, timeMax, &scene_suiv_dialogue, &mapAct);
+
     SDL_Delay(32);
     if (time > timeMax)
     {
@@ -118,12 +165,17 @@ int main()
         IMG_Quit();
         TTF_Quit();
         SDL_Quit();
+        fclose(dialogue);
         return EXIT_FAILURE;
       }
     }
   }
 
+  printf("Vous êtes seulement mort %d fois.\n", mort);
+
   printf("Déchargement du jeu...\n");
+
+  fclose(dialogue);
 
   closeTexture(&map, &player);
 

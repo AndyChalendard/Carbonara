@@ -1,14 +1,88 @@
 #include "display.h"
 
-void displayAll(SDL_Renderer * renderer, map_t map, charac_t charac, int time, int time_max)
+void displayAll(SDL_Renderer * renderer, int mort, char * perso, int * id_dialogue, char * txt_dialogue, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max, int * scene_suiv_dialogue, int * mapAct)
 {
   displayMap(renderer, map);
   displayEnnemies(renderer, map);
   displayCharac(renderer, charac);
   displayTime(renderer, time, time_max);
+  displayMort(renderer, font, mort);
 
+  if (*pause == 0 && *scene_suiv_dialogue==*mapAct)
+    *pause=1;
+  if (*pause == 1)
+  {
+    displayPause(renderer, font, perso, id_dialogue, txt_dialogue, pause, scene_suiv_dialogue, mapAct);
+  }
+
+  displayVision(renderer, map);
   /* finalisation de l'affichage */
   SDL_RenderPresent(renderer);
+}
+
+void displayMort(SDL_Renderer * renderer, TTF_Font * font, int mort)
+{
+  SDL_Color red = {255, 0, 0, 0};
+  SDL_Rect rect;
+  char txt[255];
+  sprintf(txt, "%d", mort);
+
+  rect.x = LARGEUR_FENETRE - 70;
+  rect.y = 60;
+  rect.h = 50;
+  rect.w = 70;
+
+  img_text(renderer, font, txt, red, rect);
+}
+
+void displayPause(SDL_Renderer * renderer, TTF_Font * font, char * perso, int * id_dialogue, char * txt_dialogue, int * pause, int * scene_suiv_dialogue, int * mapAct)
+{
+  char txt[255];
+  SDL_Rect rect;
+  SDL_Rect rect_dial;
+  SDL_Surface * s;
+  SDL_Texture * t;
+  SDL_Color noir = {0,0,255,0};
+  SDL_Color color = {0, 255, 0, 0};
+
+  sprintf(txt, "Textures/sprite_%s.png", perso);
+
+  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+  rect.x = 70;
+  rect.y = 70;
+  rect.w = LARGEUR_FENETRE-100;
+  rect.h = 50;
+  SDL_RenderFillRect(renderer, &rect);
+
+  img_text(renderer, font, "PAUSE", noir, rect);
+
+  rect.x = LARGEUR_FENETRE/2 - 75;
+  rect.y = HAUTEUR_FENETRE/2 - 100;
+  rect.w = 150;
+  rect.h = 150;
+
+  rect_dial.x = 70;
+  rect_dial.y = HAUTEUR_FENETRE/2 + 50;
+  rect_dial.w = LARGEUR_FENETRE-100;
+  rect_dial.h = 50;
+
+  /* on récupère la prochaine scène de dialogue */
+  if (*pause == 1 && *scene_suiv_dialogue==*mapAct)
+  {
+    if (*id_dialogue == 0)
+    {
+      s=IMG_Load(txt);
+      if(s!=NULL){
+        t = SDL_CreateTextureFromSurface(renderer,s);
+        SDL_RenderCopy(renderer,t,NULL,&rect);
+
+        SDL_FreeSurface(s);
+        if(t)
+          SDL_DestroyTexture(t);
+      }
+      img_text(renderer, font, txt_dialogue, color, rect_dial);
+    }
+  }
 }
 
 void displayMap(SDL_Renderer * renderer, map_t map)
@@ -16,6 +90,8 @@ void displayMap(SDL_Renderer * renderer, map_t map)
   int i=0, j=0;
   block_t * block;
   SDL_Rect rect;
+  SDL_Surface * s = NULL;
+  SDL_Texture * t;
 
   for (i=0; i<map.w; i++)
   {
@@ -28,6 +104,34 @@ void displayMap(SDL_Renderer * renderer, map_t map)
       rect.h = TAILLE_BLOC;
 
       SDL_RenderCopy(renderer,block->t,NULL,&rect);
+
+      switch (block->opt)
+      {
+        case BLOCK_OPT_END:
+          s=IMG_Load("Textures/stairs_up.png");
+          break;
+        case BLOCK_OPT_PPR:
+          s=IMG_Load("Textures/parcho.png");
+          break;
+        case BLOCK_OPT_STRT:
+          s=IMG_Load("Textures/stairs_down.png");
+          break;
+        case BLOCK_OPT_TP_Q:
+          s=IMG_Load("Textures/tpdepart.png");
+          break;
+        case BLOCK_OPT_TP_q:
+          s=IMG_Load("Textures/tparrivee.png");
+          break;
+      }
+      if(s!=NULL){
+        t = SDL_CreateTextureFromSurface(renderer,s);
+        SDL_RenderCopy(renderer,t,NULL,&rect);
+
+        SDL_FreeSurface(s);
+        if(t)
+          SDL_DestroyTexture(t);
+      }
+      s=NULL;
     }
   }
 }
@@ -87,6 +191,35 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max)
   SDL_RenderFillRect(renderer, &rect);
 }
 
+void lireText(FILE * file, char * txt)
+{
+  char c = fgetc(file);
+  int i = 0;
+
+  while (c != '\n')
+  {
+    txt[i] = c;
+
+    c=fgetc(file);
+    i++;
+  }
+  txt[i] = '\0';
+}
+
+void img_text(SDL_Renderer * renderer, TTF_Font * font, char * text, SDL_Color couleur, SDL_Rect rect)
+{
+  SDL_Texture  * t;
+  SDL_Surface * s;
+  s = TTF_RenderText_Blended(font,text,couleur);
+  if(s){
+      t = SDL_CreateTextureFromSurface(renderer,s);
+      SDL_FreeSurface(s);
+      SDL_RenderCopy(renderer, t, NULL, &rect);
+      if(t)
+        SDL_DestroyTexture(t);
+  }
+}
+
 int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
 {
   int x_init_player = 0;
@@ -117,6 +250,129 @@ int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
 
   return 0;
 }
+
+void displayVision(SDL_Renderer * renderer, map_t map) {
+   int i, k;
+   int eX, eY;
+
+   SDL_Rect rect;
+   SDL_Surface * s;
+   SDL_Texture * t;
+
+   rect.w = TAILLE_BLOC;
+   rect.h = TAILLE_BLOC;
+
+   s=IMG_Load("Textures/vision.png");
+   if(s!=NULL){
+     t = SDL_CreateTextureFromSurface(renderer,s);
+
+     SDL_FreeSurface(s);
+   }
+
+   for (k = 0; k < map.nbEnnemies; ++k) {
+      eX = map.ennemies[k].x / TAILLE_BLOC;
+      eY = (map.ennemies[k].y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+
+      switch (map.ennemies[k].dir) {
+         case DIR_LEFT:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-i][eY].id != BLOCK_ID_WALL) {
+              rect.x = (eX-i)*TAILLE_BLOC;
+              rect.y = eY*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-i][eY-1].id != BLOCK_ID_WALL) {
+              rect.x = (eX-i)*TAILLE_BLOC;
+              rect.y = (eY-1)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-i][eY+1].id != BLOCK_ID_WALL) {
+              rect.x = (eX-i)*TAILLE_BLOC;
+              rect.y = (eY+1)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            break;
+         case DIR_RIGHT:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+i][eY].id != BLOCK_ID_WALL) {
+              rect.x = (eX+i)*TAILLE_BLOC;
+              rect.y = eY*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+i][eY-1].id != BLOCK_ID_WALL) {
+              rect.x = (eX+i)*TAILLE_BLOC;
+              rect.y = (eY-1)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+i][eY+1].id != BLOCK_ID_WALL) {
+              rect.x = (eX+i)*TAILLE_BLOC;
+              rect.y = (eY+1)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            break;
+         case DIR_UP:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX][eY-i].id != BLOCK_ID_WALL) {
+              rect.x = (eX)*TAILLE_BLOC;
+              rect.y = (eY-i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-1][eY-i].id != BLOCK_ID_WALL) {
+              rect.x = (eX-1)*TAILLE_BLOC;
+              rect.y = (eY-i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+1][eY-i].id != BLOCK_ID_WALL) {
+              rect.x = (eX+1)*TAILLE_BLOC;
+              rect.y = (eY-i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            break;
+         case DIR_DOWN:
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX][eY+i].id != BLOCK_ID_WALL) {
+              rect.x = (eX)*TAILLE_BLOC;
+              rect.y = (eY+i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX-1][eY+i].id != BLOCK_ID_WALL) {
+              rect.x = (eX-1)*TAILLE_BLOC;
+              rect.y = (eY+i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            i = 1;
+            while (i < DETECT_DEPTH && map.map[eX+1][eY+i].id != BLOCK_ID_WALL) {
+              rect.x = (eX+1)*TAILLE_BLOC;
+              rect.y = (eY+i)*TAILLE_BLOC + 50;
+              SDL_RenderCopy(renderer,t,NULL,&rect);
+               ++i;
+            }
+            break;
+      }
+   }
+
+   if(t)
+     SDL_DestroyTexture(t);
+}
+
 
 int reloadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player)
 {

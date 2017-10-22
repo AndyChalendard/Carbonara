@@ -15,6 +15,8 @@
 #define BLOCK_ID_GRND 2001
 
 /* LISTE DES OPTIONS */
+#define BLOCK_OPT_STRT 3000
+
 #define BLOCK_OPT_GO_L 3001
 #define BLOCK_OPT_GO_R 3002
 #define BLOCK_OPT_GO_U 3003
@@ -24,6 +26,8 @@
 
 #define BLOCK_OPT_TP_Q 3006
 #define BLOCK_OPT_TP_q 3007
+
+#define BLOCK_OPT_PPR  3008
 
 
 /* CODES FICHIER */
@@ -43,11 +47,23 @@
 #define FIC_CODE_h 4011
 #define FIC_CODE_b 4012
 
+#define FIC_CODE_Q 4013
+#define FIC_CODE_q 4014
+
+#define FIC_CODE_P 4015
+
+
+typedef struct {
+   int v1;
+   int v2;
+   SDL_Texture * t;
+} block_opt_t;
 
 typedef struct {
    int           id;
    SDL_Texture * t;
    int           opt; /* option : franchissable... */
+   block_opt_t * opt_data;
 } block_t;
 
 typedef struct {
@@ -68,7 +84,7 @@ void  freeMap(map_t map);
  */
 void convertFile(char * fileName, char * newFile);
 
-block_t new_block(int id, int opt);
+block_t new_block(int id, int opt, block_opt_t * data);
 
-
+block_opt_t * new_block_opt(int v1, int v2);
 #endif
