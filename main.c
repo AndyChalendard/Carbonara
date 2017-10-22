@@ -10,6 +10,7 @@ int main()
 {
   int tmp_int = 0;
   int time = 0;
+  int cptDetection = 0;
   int timeMax = 3600;
   data_touche touche;
   int mapAct = 1;
@@ -143,7 +144,7 @@ int main()
       moveEnnemyTab(map);
 
       if (detection(map, player)) {
-        printf("detection\n");
+        printf("detect %d\n", ++cptDetection);
       }
     }
 

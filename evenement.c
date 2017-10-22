@@ -231,12 +231,12 @@ int it_detection(map_t map, int k, charac_t c) {
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX-i][eY-1].id != BLOCK_ID_WALL) {
-            res = (cX == eX-i) && (cY == eY);
+            res = (cX == eX-i) && (cY == eY-1);
             ++i;
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX-i][eY+1].id != BLOCK_ID_WALL) {
-            res = (cX == eX-i) && (cY == eY);
+            res = (cX == eX-i) && (cY == eY+1);
             ++i;
          }
          break;
@@ -248,12 +248,12 @@ int it_detection(map_t map, int k, charac_t c) {
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX+i][eY-1].id != BLOCK_ID_WALL) {
-            res = (cX == eX+i) && (cY == eY);
+            res = (cX == eX+i) && (cY == eY-1);
             ++i;
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX+i][eY+1].id != BLOCK_ID_WALL) {
-            res = (cX == eX+i) && (cY == eY);
+            res = (cX == eX+i) && (cY == eY+1);
             ++i;
          }
          break;
@@ -265,12 +265,12 @@ int it_detection(map_t map, int k, charac_t c) {
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX-1][eY-i].id != BLOCK_ID_WALL) {
-            res = (cX == eX) && (cY == eY-i);
+            res = (cX == eX-1) && (cY == eY-i);
             ++i;
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX+1][eY-i].id != BLOCK_ID_WALL) {
-            res = (cX == eX) && (cY == eY-i);
+            res = (cX == eX+1) && (cY == eY-i);
             ++i;
          }
          break;
@@ -282,12 +282,12 @@ int it_detection(map_t map, int k, charac_t c) {
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX-1][eY+i].id != BLOCK_ID_WALL) {
-            res = (cX == eX) && (cY == eY+i);
+            res = (cX == eX-1) && (cY == eY+i);
             ++i;
          }
          i = 1;
          while (!res && i < DETECT_DEPTH && map.map[eX+1][eY+i].id != BLOCK_ID_WALL) {
-            res = (cX == eX) && (cY == eY+i);
+            res = (cX == eX+1) && (cY == eY+i);
             ++i;
          }
          break;
