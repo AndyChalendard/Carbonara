@@ -47,6 +47,10 @@ int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAc
               return 1;
             }
             break;
+        case BLOCK_OPT_PPR:
+          *(mapAct) = 5;
+          map->map[caseX][caseY].opt = BLOCK_ID_GRND;
+          break;
       }
     }
   }
