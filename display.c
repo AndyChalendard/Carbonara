@@ -1,11 +1,12 @@
 #include "display.h"
 
-void displayAll(SDL_Renderer * renderer, char * perso, int * id_dialogue, char * txt_dialogue, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max, int * scene_suiv_dialogue, int * mapAct)
+void displayAll(SDL_Renderer * renderer, int mort, char * perso, int * id_dialogue, char * txt_dialogue, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max, int * scene_suiv_dialogue, int * mapAct)
 {
   displayMap(renderer, map);
   displayEnnemies(renderer, map);
   displayCharac(renderer, charac);
   displayTime(renderer, time, time_max);
+  displayMort(renderer, font, mort);
 
   if (*pause == 0 && *scene_suiv_dialogue==*mapAct)
     *pause=1;
@@ -17,6 +18,21 @@ void displayAll(SDL_Renderer * renderer, char * perso, int * id_dialogue, char *
   displayVision(renderer, map);
   /* finalisation de l'affichage */
   SDL_RenderPresent(renderer);
+}
+
+void displayMort(SDL_Renderer * renderer, TTF_Font * font, int mort)
+{
+  SDL_Color red = {255, 0, 0, 0};
+  SDL_Rect rect;
+  char txt[255];
+  sprintf(txt, "%d", mort);
+
+  rect.x = LARGEUR_FENETRE - 70;
+  rect.y = 60;
+  rect.h = 50;
+  rect.w = 70;
+
+  img_text(renderer, font, txt, red, rect);
 }
 
 void displayPause(SDL_Renderer * renderer, TTF_Font * font, char * perso, int * id_dialogue, char * txt_dialogue, int * pause, int * scene_suiv_dialogue, int * mapAct)

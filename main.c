@@ -15,6 +15,7 @@ int main()
   data_touche touche;
   int mapAct = 1;
   int pause = 1;
+  int mort = 0;
 
   charac_t player;
   SDL_Renderer * renderer;
@@ -147,11 +148,13 @@ int main()
       moveEnnemyTab(map);
 
       if (detection(map, player)) {
+        mort++;
+        time = timeMax+1;
         printf("detect %d\n", ++cptDetection);
       }
     }
 
-    displayAll(renderer, perso_dialogue, &id_dialogue, txt_dialogue, &pause, font, map, player, time, timeMax, &scene_suiv_dialogue, &mapAct);
+    displayAll(renderer, mort, perso_dialogue, &id_dialogue, txt_dialogue, &pause, font, map, player, time, timeMax, &scene_suiv_dialogue, &mapAct);
 
     SDL_Delay(32);
     if (time > timeMax)
@@ -167,6 +170,8 @@ int main()
       }
     }
   }
+
+  printf("Vous êtes seulement mort %d fois.\n", mort);
 
   printf("Déchargement du jeu...\n");
 
