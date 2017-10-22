@@ -135,6 +135,10 @@ int main()
       if (tmp_int != 0)
       {
           scene_suiv_dialogue = tmp_int;
+          if (scene_suiv_dialogue)
+          {
+            run = 0;
+          }
           pause = 0;
           fscanf(dialogue, "%d", &tmp_int);
       }
