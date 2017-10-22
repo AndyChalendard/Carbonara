@@ -6,7 +6,7 @@ CFLAGS=-Wall -Wextra -ansi -pedantic -Wchar-subscripts -Wdouble-promotion #-Werr
 
 LDFLAGS=-lSDL2 -lSDL2_ttf -lSDL2_image
 
-OBJ=main.o map.o charac.o evenement.o display.o # engine.o
+OBJ=main.o map.o charac.o evenement.o display.o menu.o
 
 EXEC=aphroCarbo
 
@@ -28,8 +28,11 @@ display.o: display.c display.h map.h charac.h
 evenement.o: evenement.c evenement.h charac.h map.h display.h
 	$(CC) -c evenement.c $(CFLAGS)
 
-#engine.o: engine.c engine.h charac.h map.h
-#	$(CC) -c engine.c $(CFLAGS)
+menu.o: menu.c menu.h
+	$(CC) -c menu.c $(CFLAGS)
+
+menu: menu.c
+	gcc -o menu menu.c $(CFLAGS) $(LDFLAGS)
 
 clean:
 	rm *.o
