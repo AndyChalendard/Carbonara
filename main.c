@@ -8,6 +8,7 @@
 
 int main()
 {
+  int tmp_int = 0;
   int time = 0;
   int timeMax = 3600;
   data_touche touche;
@@ -27,6 +28,11 @@ int main()
   SDL_Window * window;
   /* variables liees a la capture d'evenement */
   SDL_Event event;
+  FILE * dialogue;
+  int scene_suiv_dialogue = 0;
+  int id_dialogue=0;
+  char txt_dialogue[255] = "test234";
+
   int run = 1;
 
   printf("Variables initialisées !\n");
@@ -96,10 +102,17 @@ int main()
   touche = init_touche();
   printf("Evenements initialisés !\n");
 
-
   pause = 0;
+
+  dialogue = fopen("Data/dialogue", "r");
+  fscanf(dialogue, "%d%*c", &scene_suiv_dialogue);
+  fscanf(dialogue, "%d", &id_dialogue);
+  lireText(dialogue, txt_dialogue);
+
   /* boucle d'evenement */
   while(run){
+    /*printf("%d %d\n", scene_suiv_dialogue, mapAct);*/
+
     if (pause == 0)
       time += 1;
     evenement(&run, &event, &touche);
@@ -108,7 +121,21 @@ int main()
       IMG_Quit();
       TTF_Quit();
       SDL_Quit();
+      fclose(dialogue);
       return EXIT_FAILURE;
+    }
+
+    if (pause == 1 && touche.space == 1)
+    {
+      fscanf(dialogue, "%d", &tmp_int);
+      if (tmp_int != 0)
+      {
+          scene_suiv_dialogue = tmp_int;
+          pause = 0;
+          fscanf(dialogue, "%d", &tmp_int);
+      }
+      id_dialogue = 0;
+      lireText(dialogue, txt_dialogue);
     }
 
     if (pause==0)
@@ -120,7 +147,8 @@ int main()
       }
     }
 
-    displayAll(renderer, &pause, font, map, player, time, timeMax);
+    displayAll(renderer, &id_dialogue, txt_dialogue, &pause, font, map, player, time, timeMax, &scene_suiv_dialogue, &mapAct);
+
     SDL_Delay(32);
     if (time > timeMax)
     {
@@ -130,12 +158,15 @@ int main()
         IMG_Quit();
         TTF_Quit();
         SDL_Quit();
+        fclose(dialogue);
         return EXIT_FAILURE;
       }
     }
   }
 
   printf("Déchargement du jeu...\n");
+
+  fclose(dialogue);
 
   closeTexture(&map, &player);
 

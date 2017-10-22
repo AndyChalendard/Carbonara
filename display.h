@@ -16,16 +16,18 @@
 
 #define DETECT_DEPTH 4
 
-void displayAll(SDL_Renderer * renderer, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max);
+void displayAll(SDL_Renderer * renderer, int * id_dialogue, char * txt_dialogue, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max, int * scene_suiv_dialogue, int * mapAct);
 
-void displayPause(SDL_Renderer * renderer, TTF_Font * font);
+void displayPause(SDL_Renderer * renderer, TTF_Font * font, int * id_dialogue, char * txt_dialogue, int * pause, int * scene_suiv_dialogue, int * mapAct);
 void displayMap(SDL_Renderer * renderer, map_t map);
 void displayEnnemies(SDL_Renderer * renderer, map_t map);
 void displayCharac(SDL_Renderer * renderer, charac_t charac);
 void displayTime(SDL_Renderer * renderer, int time, int time_max);
 void displayVision(SDL_Renderer * renderer, map_t map);
 
-void img_text(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture  * t, char * text, SDL_Color couleur, SDL_Rect rect);
+void lireText(FILE * file, char * txt);
+
+void img_text(SDL_Renderer * renderer, TTF_Font * font, char * text, SDL_Color couleur, SDL_Rect rect);
 
 int loadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);
 int reloadGame(SDL_Renderer * renderer, int level, map_t * map, charac_t * player);

@@ -7,6 +7,7 @@ data_touche init_touche()
   touche.bas = 0;
   touche.gauche = 0;
   touche.droite = 0;
+  touche.space = 0;
   return touche;
 }
 
@@ -18,59 +19,37 @@ int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAc
   int caseX = (player->x + TAILLE_BLOC/2)/TAILLE_BLOC;
   int caseY = (player->y-HAUTEUR_TEMPS + TAILLE_BLOC/2)/TAILLE_BLOC;
 
-  block_t * block = getBlockOnMap(map, caseX, caseY-1);
+  /*block_t * block = getBlockOnMap(map, caseX, caseY-1);*/
+
+  int decallage = 13;
 
   if (*pause == 1)
   {
-
     return 0;
   }
-  /*int decallage = 13;
->>>>>>> Stashed changes
 
-   ancien
   if ((caseX*TAILLE_BLOC) + decallage > player->x && (caseX*TAILLE_BLOC) - decallage < player->x)
   {
     if ((caseY*TAILLE_BLOC) + decallage > player->y-50 && (caseY*TAILLE_BLOC) - decallage < player->y-50)
     {
-      teleport(*map, player);
-      switch (block->opt)
-      {
-        case BLOCK_OPT_END:
-          *(mapAct) = *(mapAct) + 1;
-          *time = 0;
-          if (reloadGame(renderer, *mapAct, map, player))
-          {
-            IMG_Quit();
-            TTF_Quit();
-            SDL_Quit();
-            return 1;
-          }
-          break;
+      switch (map->map[caseX][caseY].opt) {
+         case BLOCK_OPT_TP_Q:
+            teleport(*map, player);
+            break;
+         case BLOCK_OPT_END:
+            *(mapAct) = *(mapAct) + 1;
+            *time = 0;
+            if (reloadGame(renderer, *mapAct, map, player))
+            {
+              IMG_Quit();
+              TTF_Quit();
+              SDL_Quit();
+              return 1;
+            }
+            break;
       }
     }
-}*/
-
-   /*nouveau */
-   switch (map->map[caseX][caseY].opt) {
-      case BLOCK_OPT_TP_Q:
-         teleport(*map, player);
-         break;
-      case BLOCK_OPT_END:
-         *(mapAct) = *(mapAct) + 1;
-         *time = 0;
-         if (reloadGame(renderer, *mapAct, map, player))
-         {
-           IMG_Quit();
-           TTF_Quit();
-           SDL_Quit();
-           return 1;
-         }
-         break;
-   }
-
-
-
+  }
 
   /*Déplacement du personnage*/
   if (touche->haut == 1)
@@ -324,6 +303,7 @@ int it_detection(map_t map, int k, charac_t c) {
 
 void evenement(int * run, SDL_Event * event, data_touche * touche)
 {
+  touche->space=0;
   while(SDL_PollEvent(event)){
       switch(event->type){
       /*case SDL_MOUSEBUTTONDOWN:
@@ -343,6 +323,9 @@ void evenement(int * run, SDL_Event * event, data_touche * touche)
               break;
           case SDLK_RIGHT:
               touche->droite=1;
+              break;
+          case SDLK_SPACE:
+              touche->space=1;
               break;
           }
           break;

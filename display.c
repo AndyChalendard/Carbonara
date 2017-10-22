@@ -1,15 +1,17 @@
 #include "display.h"
 
-void displayAll(SDL_Renderer * renderer, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max)
+void displayAll(SDL_Renderer * renderer, int * id_dialogue, char * txt_dialogue, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max, int * scene_suiv_dialogue, int * mapAct)
 {
   displayMap(renderer, map);
   displayEnnemies(renderer, map);
   displayCharac(renderer, charac);
   displayTime(renderer, time, time_max);
 
+  if (*pause == 0 && *scene_suiv_dialogue==*mapAct)
+    *pause=1;
   if (*pause == 1)
   {
-    displayPause(renderer, font);
+    displayPause(renderer, font, id_dialogue, txt_dialogue, pause, scene_suiv_dialogue, mapAct);
   }
 
   displayVision(renderer, map);
@@ -17,12 +19,12 @@ void displayAll(SDL_Renderer * renderer, int * pause, TTF_Font * font, map_t map
   SDL_RenderPresent(renderer);
 }
 
-void displayPause(SDL_Renderer * renderer, TTF_Font * font)
+void displayPause(SDL_Renderer * renderer, TTF_Font * font, int * id_dialogue, char * txt_dialogue, int * pause, int * scene_suiv_dialogue, int * mapAct)
 {
   SDL_Rect rect;
+  SDL_Rect rect_dial;
   SDL_Color noir = {0,0,255,0};
-  SDL_Texture  * t;
-  char txt[] = "PAUSE";
+  SDL_Color color = {0, 255, 0, 0};
 
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
   rect.x = 70;
@@ -31,8 +33,21 @@ void displayPause(SDL_Renderer * renderer, TTF_Font * font)
   rect.h = 50;
   SDL_RenderFillRect(renderer, &rect);
 
-  t = NULL;
-  img_text(renderer, font, t, txt, noir, rect);
+  img_text(renderer, font, "PAUSE", noir, rect);
+
+  rect_dial.x = 70;
+  rect_dial.y = HAUTEUR_FENETRE/2 + 50;
+  rect_dial.w = LARGEUR_FENETRE-100;
+  rect_dial.h = 50;
+
+  /* on récupère la prochaine scène de dialogue */
+  if (*pause == 1 && *scene_suiv_dialogue==*mapAct)
+  {
+    if (*id_dialogue == 0)
+    {
+      img_text(renderer, font, txt_dialogue, color, rect_dial);
+    }
+  }
 }
 
 void displayMap(SDL_Renderer * renderer, map_t map)
@@ -141,14 +156,32 @@ void displayTime(SDL_Renderer * renderer, int time, int time_max)
   SDL_RenderFillRect(renderer, &rect);
 }
 
-void img_text(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture  * t, char * text, SDL_Color couleur, SDL_Rect rect)
+void lireText(FILE * file, char * txt)
 {
+  char c = fgetc(file);
+  int i = 0;
+
+  while (c != '\n')
+  {
+    txt[i] = c;
+
+    c=fgetc(file);
+    i++;
+  }
+  txt[i] = '\0';
+}
+
+void img_text(SDL_Renderer * renderer, TTF_Font * font, char * text, SDL_Color couleur, SDL_Rect rect)
+{
+  SDL_Texture  * t;
   SDL_Surface * s;
   s = TTF_RenderText_Blended(font,text,couleur);
   if(s){
       t = SDL_CreateTextureFromSurface(renderer,s);
       SDL_FreeSurface(s);
       SDL_RenderCopy(renderer, t, NULL, &rect);
+      if(t)
+        SDL_DestroyTexture(t);
   }
 }
 

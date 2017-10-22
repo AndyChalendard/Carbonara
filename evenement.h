@@ -17,6 +17,7 @@ typedef struct{
   int bas;
   int gauche;
   int droite;
+  int space;
 }data_touche;
 
 /* deplace le personnage */
