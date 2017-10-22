@@ -220,8 +220,8 @@ int it_detection(map_t map, int k, charac_t c) {
    int res = 0;
    int i = 0;
 
-   int cX = c.x / TAILLE_BLOC;
-   int cY = (c.y - HAUTEUR_TEMPS) / TAILLE_BLOC;
+   int cX = (c.x+25) / TAILLE_BLOC;
+   int cY = ((c.y+25) - HAUTEUR_TEMPS) / TAILLE_BLOC;
 
    int eX = map.ennemies[k].x / TAILLE_BLOC;
    int eY = (map.ennemies[k].y - HAUTEUR_TEMPS) / TAILLE_BLOC;
