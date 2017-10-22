@@ -11,7 +11,7 @@ int main()
   int tmp_int = 0;
   int time = 0;
   int cptDetection = 0;
-  int timeMax = 3600;
+  int timeMax = 1800;
   data_touche touche;
   int mapAct = 1;
   int pause = 1;
