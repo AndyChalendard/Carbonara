@@ -1,6 +1,6 @@
 #include "display.h"
 
-void displayAll(SDL_Renderer * renderer, int * id_dialogue, char * txt_dialogue, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max, int * scene_suiv_dialogue, int * mapAct)
+void displayAll(SDL_Renderer * renderer, char * perso, int * id_dialogue, char * txt_dialogue, int * pause, TTF_Font * font, map_t map, charac_t charac, int time, int time_max, int * scene_suiv_dialogue, int * mapAct)
 {
   displayMap(renderer, map);
   displayEnnemies(renderer, map);
@@ -11,7 +11,7 @@ void displayAll(SDL_Renderer * renderer, int * id_dialogue, char * txt_dialogue,
     *pause=1;
   if (*pause == 1)
   {
-    displayPause(renderer, font, id_dialogue, txt_dialogue, pause, scene_suiv_dialogue, mapAct);
+    displayPause(renderer, font, perso, id_dialogue, txt_dialogue, pause, scene_suiv_dialogue, mapAct);
   }
 
   displayVision(renderer, map);
@@ -19,12 +19,17 @@ void displayAll(SDL_Renderer * renderer, int * id_dialogue, char * txt_dialogue,
   SDL_RenderPresent(renderer);
 }
 
-void displayPause(SDL_Renderer * renderer, TTF_Font * font, int * id_dialogue, char * txt_dialogue, int * pause, int * scene_suiv_dialogue, int * mapAct)
+void displayPause(SDL_Renderer * renderer, TTF_Font * font, char * perso, int * id_dialogue, char * txt_dialogue, int * pause, int * scene_suiv_dialogue, int * mapAct)
 {
+  char txt[255];
   SDL_Rect rect;
   SDL_Rect rect_dial;
+  SDL_Surface * s;
+  SDL_Texture * t;
   SDL_Color noir = {0,0,255,0};
   SDL_Color color = {0, 255, 0, 0};
+
+  sprintf(txt, "Textures/sprite_%s.png", perso);
 
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
   rect.x = 70;
@@ -34,6 +39,11 @@ void displayPause(SDL_Renderer * renderer, TTF_Font * font, int * id_dialogue, c
   SDL_RenderFillRect(renderer, &rect);
 
   img_text(renderer, font, "PAUSE", noir, rect);
+
+  rect.x = LARGEUR_FENETRE/2 - 75;
+  rect.y = HAUTEUR_FENETRE/2 - 100;
+  rect.w = 150;
+  rect.h = 150;
 
   rect_dial.x = 70;
   rect_dial.y = HAUTEUR_FENETRE/2 + 50;
@@ -45,6 +55,15 @@ void displayPause(SDL_Renderer * renderer, TTF_Font * font, int * id_dialogue, c
   {
     if (*id_dialogue == 0)
     {
+      s=IMG_Load(txt);
+      if(s!=NULL){
+        t = SDL_CreateTextureFromSurface(renderer,s);
+        SDL_RenderCopy(renderer,t,NULL,&rect);
+
+        SDL_FreeSurface(s);
+        if(t)
+          SDL_DestroyTexture(t);
+      }
       img_text(renderer, font, txt_dialogue, color, rect_dial);
     }
   }

@@ -33,6 +33,7 @@ int main()
   int scene_suiv_dialogue = 0;
   int id_dialogue=0;
   char txt_dialogue[255] = "test234";
+  char perso_dialogue[10];
 
   int run = 1;
 
@@ -108,6 +109,7 @@ int main()
   dialogue = fopen("Data/dialogue", "r");
   fscanf(dialogue, "%d%*c", &scene_suiv_dialogue);
   fscanf(dialogue, "%d", &id_dialogue);
+  fscanf(dialogue, "%s:", perso_dialogue);
   lireText(dialogue, txt_dialogue);
 
   /* boucle d'evenement */
@@ -136,6 +138,7 @@ int main()
           fscanf(dialogue, "%d", &tmp_int);
       }
       id_dialogue = 0;
+      fscanf(dialogue, "%s:", perso_dialogue);
       lireText(dialogue, txt_dialogue);
     }
 
@@ -148,7 +151,7 @@ int main()
       }
     }
 
-    displayAll(renderer, &id_dialogue, txt_dialogue, &pause, font, map, player, time, timeMax, &scene_suiv_dialogue, &mapAct);
+    displayAll(renderer, perso_dialogue, &id_dialogue, txt_dialogue, &pause, font, map, player, time, timeMax, &scene_suiv_dialogue, &mapAct);
 
     SDL_Delay(32);
     if (time > timeMax)
