@@ -216,15 +216,15 @@ void displayVision(SDL_Renderer * renderer, map_t map) {
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX-i][eY-1].id != BLOCK_ID_WALL) {
-              rect.x = eX-i*TAILLE_BLOC;
+              rect.x = (eX-i)*TAILLE_BLOC;
               rect.y = (eY-1)*TAILLE_BLOC + 50;
               SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
             i = 1;
             while (i < DETECT_DEPTH && map.map[eX-i][eY+1].id != BLOCK_ID_WALL) {
-              rect.x = eX-i*TAILLE_BLOC;
-              rect.y = eY+1*TAILLE_BLOC + 50;
+              rect.x = (eX-i)*TAILLE_BLOC;
+              rect.y = (eY+1)*TAILLE_BLOC + 50;
               SDL_RenderCopy(renderer,t,NULL,&rect);
                ++i;
             }
