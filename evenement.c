@@ -48,7 +48,7 @@ int evenementPlay(SDL_Renderer * renderer, int * pause, map_t * map, int * mapAc
             }
             break;
         case BLOCK_OPT_PPR:
-          *(mapAct) = 5;
+          *(mapAct) = 7;
           map->map[caseX][caseY].opt = BLOCK_ID_GRND;
           break;
       }
