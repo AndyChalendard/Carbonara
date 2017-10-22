@@ -135,7 +135,7 @@ int main()
       if (tmp_int != 0)
       {
           scene_suiv_dialogue = tmp_int;
-          if (scene_suiv_dialogue)
+          if (scene_suiv_dialogue == 40)
           {
             run = 0;
           }
